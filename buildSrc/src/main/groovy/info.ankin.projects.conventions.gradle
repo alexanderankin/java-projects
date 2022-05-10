@@ -1,6 +1,16 @@
 plugins {
     id 'java'
     id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'info.ankin.projects'
+
+java {
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
@@ -28,3 +38,11 @@ dependencies {
 
 // use junit for all tests
 tasks.withType(Test) { t -> t.useJUnitPlatform() }
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
