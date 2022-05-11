@@ -1,9 +1,9 @@
 plugins {
     id 'info.ankin.projects.conventions'
-    id 'java-library'
 }
 
 version = '0.0.1'
 
 dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
 }
