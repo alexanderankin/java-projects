@@ -1,2 +1,3 @@
 rootProject.name = 'java-projects'
+include 'cli:killport'
 include 'terminal:supports-hyperlinks'

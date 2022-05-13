@@ -1,0 +1,8 @@
+plugins {
+    id 'info.ankin.projects.app-conventions'
+}
+
+version = '0.0.1'
+
+dependencies {
+}
