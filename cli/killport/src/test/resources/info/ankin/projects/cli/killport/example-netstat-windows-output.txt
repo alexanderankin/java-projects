@@ -1,0 +1,23 @@
+C:\>netstat -ano
+
+Active Connections
+
+  Proto  Local Address          Foreign Address        State           PID
+  TCP    0.0.0.0:135            0.0.0.0:0              LISTENING       680
+  TCP    0.0.0.0:445            0.0.0.0:0              LISTENING       4
+  TCP    0.0.0.0:3389           0.0.0.0:0              LISTENING       1128
+  TCP    0.0.0.0:49152          0.0.0.0:0              LISTENING       348
+  TCP    0.0.0.0:49153          0.0.0.0:0              LISTENING       772
+  TCP    0.0.0.0:49154          0.0.0.0:0              LISTENING       896
+  TCP    0.0.0.0:49155          0.0.0.0:0              LISTENING       432
+  TCP    0.0.0.0:49156          0.0.0.0:0              LISTENING       448
+  TCP    10.0.2.15:139          0.0.0.0:0              LISTENING       4
+  TCP    [::]:135               [::]:0                 LISTENING       680
+  TCP    [::]:445               [::]:0                 LISTENING       4
+  TCP    [::]:3389              [::]:0                 LISTENING       1128
+  TCP    [::]:49152             [::]:0                 LISTENING       348
+  TCP    [::]:49153             [::]:0                 LISTENING       772
+  TCP    [::]:49154             [::]:0                 LISTENING       896
+  TCP    [::]:49155             [::]:0                 LISTENING       432
+  TCP    [::]:49156             [::]:0                 LISTENING       448
+  TCP    0.0.0.0:5355           *:*                    LISTENING       1128

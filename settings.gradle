@@ -1,2 +1,4 @@
 rootProject.name = 'java-projects'
-include 'terminal:supports-hyperlinks'
+include 'cli:killport'
+include 'system:infer-platform'
+include 'system:terminal:supports-hyperlinks'
