@@ -1,5 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.graalvm.buildtools.gradle.dsl.NativeImageOptions
+import org.graalvm.buildtools.gradle.tasks.BuildNativeImageTask
 
 plugins {
     id 'info.ankin.projects.app-conventions'
@@ -75,16 +76,23 @@ graalvmNative {
     }
 }
 
+def cp = tasks.register('copyNativeImages') {
+    def files = ['yaml2json', 'json2yaml'].toSet()
+    dependsOn tasks.withType(BuildNativeImageTask).matching { o -> o.executableName.get() in files }
+    doLast {
+        tasks.nativeCompile.outputs.files.singleFile.mkdirs()
+        copy {
+            from tasks.nativeJson2yamlCompile.outputs.files
+            from tasks.nativeYaml2jsonCompile.outputs.files
+
+            into tasks.nativeCompile.outputs.files.singleFile
+        };
+    }
+}
+
 tasks {
     nativeCompile {
-        dependsOn nativeYaml2jsonCompile, nativeJson2yamlCompile
-        doLast {
-            copy {
-                from tasks.nativeJson2yamlCompile.outputs.files.files
-                from tasks.nativeYaml2jsonCompile.outputs.files.files
-
-                into tasks.nativeCompile.outputs.files.singleFile
-            }
-        }
+        finalizedBy nativeYaml2jsonCompile, nativeJson2yamlCompile, cp
+        enabled false
     }
 }
