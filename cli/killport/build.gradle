@@ -1,6 +1,5 @@
 plugins {
     id 'info.ankin.projects.app-conventions'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 version = '0.0.1'
@@ -35,7 +34,7 @@ graalvmNative {
             // // Passes '-H:Extra' to the native image builder options.
             // // This can be used to pass parameters which are not directly supported by this extension
             // buildArgs.add('-H:Extra')
-            buildArgs.add('-Ob')
+            // buildArgs.add('-Ob') // faster development builds
             //
             // // Passes 'flag' directly to the JVM running the native image builder
             // jvmArgs.add('flag')
