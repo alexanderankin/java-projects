@@ -1,5 +1,5 @@
 plugins {
-    id 'info.ankin.projects.conventions'
+    id 'info.ankin.projects.library-conventions'
 }
 
 version = '0.0.1'
