@@ -5,7 +5,8 @@ public class PlatformInferrer {
         String osName = System.getProperty("os.name");
         if (osName.toLowerCase().startsWith("windows")) return Os.WINDOWS;
         if (osName.toLowerCase().startsWith("mac")) return Os.DARWIN;
-        return Os.LINUX;
+        if (osName.toLowerCase().startsWith("linux")) return Os.LINUX;
+        return Os.UNKNOWN;
     }
 
     public Arch arch() {

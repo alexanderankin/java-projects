@@ -4,4 +4,5 @@ public enum Os {
     DARWIN,
     LINUX,
     WINDOWS,
+    UNKNOWN,
 }
