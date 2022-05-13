@@ -15,8 +15,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class KillPort {
-    private static final String REGEX = " ";
-
     final List<Integer> ports;
     final Protocol method;
     final PlatformInferrer platformInferrer;
@@ -47,6 +45,7 @@ public class KillPort {
         System.out.println("hello, world!");
         Os os = platformInferrer.os();
         System.out.println("we are running on " + os + "!");
+        System.out.println("we are removing processes listening on ports: " + ports);
         run(os);
     }
 
@@ -93,12 +92,15 @@ public class KillPort {
         return exec("netstat -nao");
     }
 
-    String exec(String s) throws IOException, InterruptedException {
+    String exec(String command) throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command(s.split(REGEX));
+        String shell = platformInferrer.os() == Os.WINDOWS ? "cmd" : "sh";
+        String flag = platformInferrer.os() == Os.WINDOWS ? "/C" : "-c";
+        processBuilder.command(shell, flag, command);
         Process process = processBuilder.start();
         InputStream output = process.getInputStream();
         int exitCode = process.waitFor();
+        System.out.println("process exited with code: " + exitCode);
         return IOUtils.toString(output, StandardCharsets.UTF_8);
     }
 
