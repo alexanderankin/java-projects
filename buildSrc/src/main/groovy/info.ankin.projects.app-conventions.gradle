@@ -1,4 +1,5 @@
 plugins {
     id 'info.ankin.projects.conventions'
     id 'application'
+    id 'org.graalvm.buildtools.native'
 }

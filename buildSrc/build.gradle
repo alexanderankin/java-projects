@@ -4,4 +4,10 @@ plugins {
 
 repositories {
     gradlePluginPortal()
+    mavenCentral()
+}
+
+dependencies {
+    // https://stackoverflow.com/a/66897652
+    implementation 'org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin:0.9.11'
 }
