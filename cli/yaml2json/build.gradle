@@ -44,12 +44,6 @@ tasks {
     }
 }
 
-task example {
-    doLast {
-        println
-    }
-}
-
 // for graalvmNative
 tasks.jar.enabled(true)
 
