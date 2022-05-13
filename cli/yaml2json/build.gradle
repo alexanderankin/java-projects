@@ -1,0 +1,96 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.graalvm.buildtools.gradle.dsl.NativeImageOptions
+
+plugins {
+    id 'info.ankin.projects.app-conventions'
+}
+
+version = '0.0.1'
+
+dependencies {
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.2'
+}
+
+// for shadowJar
+application.mainClass.set 'info.ankin.projects.cli.yaml2json.Yaml2Json'
+
+shadowJar {
+    // output first jar as "shadow"
+    // so as not to confuse with yaml2json and json2Yaml
+    archiveBaseName.set 'shadow'
+}
+
+void customShadowJar(ShadowJar s, String name, String className) {
+    s.group 'shadow'
+    s.description name + 'Jar shadow jar'
+    s.archiveBaseName.set name
+    s.manifest {
+        attributes('Main-Class': 'info.ankin.projects.cli.yaml2json.' + className)
+    }
+    s.from zipTree(tasks.shadowJar.getArchiveFile())
+}
+
+def yaml2JsonJar = tasks.register('yaml2JsonJar', ShadowJar) {
+    customShadowJar(it, 'yaml2Json', 'Yaml2Json')
+}
+
+def json2YamlJar = tasks.register('json2YamlJar', ShadowJar) {
+    customShadowJar(it, 'json2Yaml', 'Json2Yaml')
+}
+
+tasks {
+    shadowJar {
+        finalizedBy yaml2JsonJar, json2YamlJar
+    }
+}
+
+task example {
+    doLast {
+        println
+    }
+}
+
+// for graalvmNative
+tasks.jar.enabled(true)
+
+// https://graalvm.github.io/native-build-tools/0.9.11/gradle-plugin.html#_configuration_options
+graalvmNative {
+    binaries  {
+        json2yaml { NativeImageOptions o ->
+            o.imageName.set 'json2yaml'
+            o.mainClass.set json2YamlJar.get().getManifest().getAttributes().get('Main-Class')
+
+            o.debug.set false
+            o.verbose.set true
+            o.fallback.set false
+            o.buildArgs.add('-Ob') // faster development builds
+            o.useFatJar.set false
+            o.classpath sourceSets.main.output.files, project.tasks.shadowJar
+        }
+
+        yaml2json { NativeImageOptions o ->
+            o.imageName.set 'yaml2json'
+            o.mainClass.set yaml2JsonJar.get().getManifest().getAttributes().get('Main-Class')
+            o.debug.set false
+            o.verbose.set true
+            o.fallback.set false
+            o.buildArgs.add('-Ob') // faster development builds
+            o.useFatJar.set false
+            o.classpath sourceSets.main.output.files, project.tasks.shadowJar
+        }
+    }
+}
+
+tasks {
+    nativeCompile {
+        dependsOn nativeYaml2jsonCompile, nativeJson2yamlCompile
+        doLast {
+            copy {
+                from tasks.nativeJson2yamlCompile.outputs.files.files
+                from tasks.nativeYaml2jsonCompile.outputs.files.files
+
+                into tasks.nativeCompile.outputs.files.singleFile
+            }
+        }
+    }
+}
