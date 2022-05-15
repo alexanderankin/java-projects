@@ -1,0 +1,41 @@
+plugins {
+    id 'info.ankin.projects.app-conventions'
+}
+
+version = '0.0.1'
+
+def picoCliVersion = '4.6.3'
+
+dependencies {
+    annotationProcessor group: 'info.picocli', name: 'picocli-codegen', version: picoCliVersion
+    implementation group: 'info.picocli', name: 'picocli', version: picoCliVersion
+    // implementation project(':system:infer-platform')
+    // implementation 'commons-io:commons-io:2.11.0'
+    // implementation 'org.apache.commons:commons-lang3:3.12.0'
+}
+
+application {
+    mainClass.set 'info.ankin.projects.cli.gpg.Gpg'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Version': project.version
+    }
+}
+
+graalvmNative {
+    binaries {
+        main {
+            imageName.set project.name
+            mainClass.set application.mainClass.get()
+
+            debug.set false
+            verbose.set true
+            fallback.set false
+            buildArgs.add('-Ob') // faster development builds
+            useFatJar.set false
+            classpath project.tasks.shadowJar
+        }
+    }
+}
