@@ -1,0 +1,42 @@
+plugins {
+    id 'info.ankin.projects.picocli-app-conventions'
+}
+
+version = '0.0.1'
+
+dependencies {
+}
+
+application {
+    mainClass.set 'info.ankin.projects.cli.msgs.Msgs'
+}
+
+// https://graalvm.github.io/native-build-tools/0.9.11/gradle-plugin.html#_configuration_options
+graalvmNative {
+    binaries {
+        main {
+            // Main options
+            imageName.set 'msgs'
+            mainClass.set application.mainClass.get()
+
+            debug.set false
+            verbose.set true
+            fallback.set true
+            // sharedLibrary.set false
+            // systemProperties = System.getProperties();
+
+            // Adds a native image configuration file directory, containing files like reflection configuration
+            // configurationFileDirectories.from(file('src/my-config'))
+
+            // // Passes '-H:Extra' to the native image builder options.
+            // // This can be used to pass parameters which are not directly supported by this extension
+            // buildArgs.add('-H:Extra')
+            // buildArgs.add('-Ob') // faster development builds
+            //
+            // // Passes 'flag' directly to the JVM running the native image builder
+            // jvmArgs.add('flag')
+
+            useFatJar.set true
+        }
+    }
+}
