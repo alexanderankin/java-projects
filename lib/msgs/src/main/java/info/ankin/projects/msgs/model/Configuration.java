@@ -10,6 +10,13 @@ import lombok.experimental.Accessors;
 @Data
 public class Configuration {
     String host;
-    int port;
+    Integer port;
     boolean ssl;
+
+    public String getHost() {
+        if (host == null)
+            return "localhost";
+
+        return host;
+    }
 }
