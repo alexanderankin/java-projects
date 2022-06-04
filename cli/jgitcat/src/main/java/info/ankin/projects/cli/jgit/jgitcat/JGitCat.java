@@ -64,12 +64,6 @@ public class JGitCat implements Runnable {
         return System.out;
     }
 
-    // sample usage (https://stackoverflow.com/a/54486558)
-    private void loadFromGit() throws Exception {
-        ObjectLoader loader = loadRemote("https://github.com/msangel/promisified-resource-loader", "master", "README.md");
-        loader.copyTo(System.out);
-    }
-
     private ObjectLoader loadRemote(String uri, String branch, String filename) throws Exception {
         DfsRepositoryDescription repoDesc = new DfsRepositoryDescription();
         try (InMemoryRepository repo = new InMemoryRepository(repoDesc);
