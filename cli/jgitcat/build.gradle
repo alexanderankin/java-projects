@@ -30,6 +30,26 @@ shadowJar {
     archiveBaseName.set 'shadow'
 }
 
+def tracingOutput = project.buildDir.toPath().resolve('native/agent-output/traceIt')
+sourceSets.main.resources.srcDir tracingOutput
+
+def traceIt = tasks.register('traceIt', JavaExec) {
+    group 'build'
+    description 'build graalvm config by running with agent'
+
+    classpath sourceSets.main.runtimeClasspath
+    mainClass = 'info.ankin.projects.cli.jgit.jgitcat.JGitCat'
+    def repo = 'https://github.com/msangel/promisified-resource-loader'
+    args '-r', repo, '-b', 'master'
+
+    def outDir = tracingOutput.resolve('META-INF/native-image/info.ankin.projects/jgitcat')
+    it.jvmArgs += ('-agentlib:native-image-agent=config-output-dir=' + outDir)
+
+    it.inputs.files sourceSets.main.java
+    it.outputs.dir outDir
+}
+tasks.named('shadowJar') { dependsOn traceIt }
+
 // https://graalvm.github.io/native-build-tools/0.9.11/gradle-plugin.html#_configuration_options
 graalvmNative {
     binaries {
