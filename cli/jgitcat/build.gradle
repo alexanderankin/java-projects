@@ -48,7 +48,7 @@ def traceIt = tasks.register('traceIt', JavaExec) {
     it.inputs.files sourceSets.main.java
     it.outputs.dir outDir
 }
-tasks.named('shadowJar') { dependsOn traceIt }
+tasks.named('jar') { dependsOn traceIt }
 
 // https://graalvm.github.io/native-build-tools/0.9.11/gradle-plugin.html#_configuration_options
 graalvmNative {
