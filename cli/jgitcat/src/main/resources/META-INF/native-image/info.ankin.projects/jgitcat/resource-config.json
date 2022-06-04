@@ -1,0 +1,20 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "logback.xml"
+      }
+    ]
+  },
+  "bundles": [
+    {
+      "name": "org.eclipse.jgit.gitrepo.internal.RepoText"
+    },
+    {
+      "name": "org.eclipse.jgit.internal.JGitText"
+    },
+    {
+      "name": "org.eclipse.jgit.internal.storage.dfs.DfsText"
+    }
+  ]
+}

@@ -42,6 +42,9 @@ graalvmNative {
             verbose.set true
             fallback.set false
             buildArgs.add('-Ob') // faster development builds
+            // https://github.com/oracle/graal/blob/master/docs/reference-manual/native-image/URLProtocols.md
+            buildArgs.add('--enable-http')
+            buildArgs.add('--enable-https')
             // useFatJar.set true
         }
     }
