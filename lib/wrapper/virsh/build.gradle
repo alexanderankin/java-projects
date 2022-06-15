@@ -1,0 +1,13 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+}
+
+version = '0.0.1'
+
+dependencies {
+    api platform('com.fasterxml.jackson:jackson-bom:2.13.3')
+    api 'com.fasterxml.jackson.core:jackson-annotations'
+    api 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+    api 'com.fasterxml.jackson.core:jackson-core'
+    api 'com.fasterxml.jackson.core:jackson-databind'
+}

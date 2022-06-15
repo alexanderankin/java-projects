@@ -1,5 +1,6 @@
 rootProject.name = 'java-projects'
 include 'cli:killport'
 include 'cli:yaml2json'
+include 'lib:wrapper:virsh'
 include 'system:infer-platform'
 include 'system:terminal:supports-hyperlinks'
