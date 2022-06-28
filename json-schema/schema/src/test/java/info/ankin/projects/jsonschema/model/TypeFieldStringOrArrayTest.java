@@ -98,7 +98,7 @@ public class TypeFieldStringOrArrayTest {
      *
      * @see <a href="https://github.com/json-schema-org/json-schema-spec/blob/dba92b702c94858162f653590230e7573c8b7dd0/schema.json#L127-L137">"type" field in v4 meta-schema</a>
      */
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE, defaultImpl = Representation2.class)
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
     @JsonSubTypes(value = {
             @JsonSubTypes.Type(Representation1.class),
             @JsonSubTypes.Type(Representation2.class)
