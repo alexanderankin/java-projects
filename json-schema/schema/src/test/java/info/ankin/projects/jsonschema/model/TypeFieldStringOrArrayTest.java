@@ -34,11 +34,11 @@ public class TypeFieldStringOrArrayTest {
         objectMapper = new ObjectMapper().registerModule(new SimpleModule()
                 .addDeserializer(Representation.class, new JsonDeserializer<>() {
                     @Override
-                    public Representation deserialize(JsonParser p, DeserializationContext ctxt)
+                    public Representation deserialize(JsonParser p, DeserializationContext c)
                             throws IOException {
                         TreeNode treeNode = p.getCodec().readTree(p);
 
-                        // if we are a string, then its the only one, otherwise it is an array
+                        // if we are a string, then it's the only one, otherwise it is an array
                         if (treeNode instanceof TextNode)
                             return objectMapper.treeToValue(treeNode, Representation1.class);
                         else
@@ -47,6 +47,9 @@ public class TypeFieldStringOrArrayTest {
                 }));
     }
 
+    /**
+     * This test represents a token which is a type, consisting of just a single type
+     */
     @Test
     void test1() {
         String input1 = """
@@ -57,9 +60,12 @@ public class TypeFieldStringOrArrayTest {
         System.out.println("output1: " + output1);
 
         assertThat(output1, is(instanceOf(Representation1.class)));
-        assertThat(((Representation1)output1).getType(), is(SimpleType.ENUM));
+        assertThat(((Representation1) output1).getType(), is(SimpleType.ENUM));
     }
 
+    /**
+     * This test represents a token which is a type, consisting of list of types
+     */
     @Test
     void test2() {
         String input2 = """
@@ -68,7 +74,7 @@ public class TypeFieldStringOrArrayTest {
         Representation output2 = parse(input2);
         System.out.println("output2: " + output2);
         assertThat(output2, is(instanceOf(Representation2.class)));
-        assertThat(((Representation2)output2).getTypes(),
+        assertThat(((Representation2) output2).getTypes(),
                 contains(SimpleType.ENUM, SimpleType.ARRAY));
     }
 
