@@ -79,6 +79,24 @@ public class TypeFieldStringOrArrayTest {
     }
 
     @SneakyThrows
+    @Test
+    void test_parseAsField() {
+        String input = "[{\"name\":\"field0\",\"type\":\"BOOLEAN\"}," +
+                "{\"name\":\"field1\",\"type\":[\"ARRAY\",\"BOOLEAN\"]}]";
+        Field[] field = objectMapper.readValue(input, Field[].class);
+        assertThat(field.length, is(2));
+        assertThat(field[0].getName(), is("field0"));
+        assertThat(field[0].getType(), is(instanceOf(Representation1.class)));
+        assertThat(((Representation1) field[0].getType()).getType(),
+                is(SimpleType.BOOLEAN));
+
+        assertThat(field[1].getName(), is("field1"));
+        assertThat(field[1].getType(), is(instanceOf(Representation2.class)));
+        assertThat(((Representation2) field[1].getType()).getTypes(),
+                contains(SimpleType.ARRAY, SimpleType.BOOLEAN));
+    }
+
+    @SneakyThrows
     private Representation parse(String input2) {
         return objectMapper.readValue(input2, Representation.class);
     }
@@ -97,6 +115,12 @@ public class TypeFieldStringOrArrayTest {
         OBJECT,
         STRING,
         ENUM
+    }
+
+    @Data
+    public static class Field {
+        String name;
+        Representation type;
     }
 
     /**
