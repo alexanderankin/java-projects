@@ -1,0 +1,19 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+}
+
+java {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+}
+
+version = '0.0.1'
+
+dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation platform('com.fasterxml.jackson:jackson-bom:' + property('jacksonVersion'))
+    api 'com.fasterxml.jackson.core:jackson-annotations'
+    api 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+}

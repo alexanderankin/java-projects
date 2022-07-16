@@ -9,7 +9,8 @@ plugins {
 version = '0.0.1'
 
 dependencies {
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.2'
+    implementation platform('com.fasterxml.jackson:jackson-bom:' + property('jacksonVersion'))
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
 }
 
 // for shadowJar
