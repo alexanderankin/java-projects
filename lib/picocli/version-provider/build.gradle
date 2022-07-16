@@ -1,0 +1,11 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+    id 'jacoco'
+}
+
+version = '0.0.1'
+
+dependencies {
+    compileOnly 'info.picocli:picocli:' + property('picocliVersion')
+    testImplementation 'info.picocli:picocli:' + property('picocliVersion')
+}
