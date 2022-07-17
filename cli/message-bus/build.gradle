@@ -46,14 +46,15 @@ dependencies {
     // implementation('io.micronaut.mqtt:micronaut-mqttv3')
     // implementation('io.micronaut.mqtt:micronaut-mqttv5')
     implementation('io.micronaut.picocli:micronaut-picocli')
-    implementation('io.micronaut.rabbitmq:micronaut-rabbitmq')
-    // implementation('io.micronaut.reactor:micronaut-reactor')
+    // implementation('io.micronaut.rabbitmq:micronaut-rabbitmq')
+    implementation('io.micronaut.reactor:micronaut-reactor')
     // implementation('io.micronaut.reactor:micronaut-reactor-http-client')
     implementation('io.micronaut.serde:micronaut-serde-jackson')
     implementation('jakarta.annotation:jakarta.annotation-api')
     compileOnly('org.graalvm.nativeimage:svm')
 
     implementation('io.micronaut:micronaut-validation')
+
 }
 
 tasks.withType(Jar).configureEach { manifest { attributes(['Implementation-Version': project.getVersion()]) } }
