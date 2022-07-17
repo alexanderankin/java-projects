@@ -1,3 +1,8 @@
 plugins {
     id 'info.ankin.projects.library-conventions'
 }
+
+dependencies {
+    implementation 'info.picocli:picocli:' + property('picocliVersion')
+    annotationProcessor 'info.picocli:picocli-codegen:' + property('picocliVersion')
+}
