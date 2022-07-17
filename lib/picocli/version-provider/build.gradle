@@ -1,6 +1,5 @@
 plugins {
     id 'info.ankin.projects.library-conventions'
-    id 'jacoco'
 }
 
 version = '0.0.1'
