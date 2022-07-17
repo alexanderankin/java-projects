@@ -2,23 +2,58 @@ import org.graalvm.buildtools.gradle.tasks.BuildNativeImageTask
 
 plugins {
     id 'info.ankin.projects.app-conventions'
+    id 'io.micronaut.application' version '3.4.1'
 }
 
 version = '0.0.1'
 
+application {
+    mainClass.set 'info.ankin.projects.cli.messagebus.MessageBus'
+}
+
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module('io.micronaut:micronaut-jackson-databind'))
+                .using(module('io.micronaut.serde:micronaut-serde-jackson:1.1.0'))
+    }
+}
+
+micronaut {
+    testRuntime('junit5')
+    processing {
+        incremental(true)
+        annotations(application.mainClass.get().split('\\.')
+                .reverse().with({ it[0] = '*'; it }).reverse()
+                .join('.'))
+    }
+}
+
 dependencies {
     implementation 'info.picocli:picocli:' + property('picocliVersion')
     annotationProcessor 'info.picocli:picocli-codegen:' + property('picocliVersion')
+    // annotationProcessor('io.micronaut:micronaut-http-validation')
+    annotationProcessor('io.micronaut.serde:micronaut-serde-processor')
 
     implementation project(':lib:picocli:version-provider')
+    implementation project(':lib:picocli:no-logging')
 
-    implementation 'ch.qos.logback:logback-classic:1.2.11'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.2.11'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-}
 
-application {
-    mainClass.set 'info.ankin.projects.cli.messagebus.MessageBus'
+    implementation('io.micronaut:micronaut-http-client')
+    // implementation('io.micronaut.kafka:micronaut-kafka')
+    // implementation('io.micronaut.mqtt:micronaut-mqttv3')
+    // implementation('io.micronaut.mqtt:micronaut-mqttv5')
+    implementation('io.micronaut.picocli:micronaut-picocli')
+    implementation('io.micronaut.rabbitmq:micronaut-rabbitmq')
+    // implementation('io.micronaut.reactor:micronaut-reactor')
+    // implementation('io.micronaut.reactor:micronaut-reactor-http-client')
+    implementation('io.micronaut.serde:micronaut-serde-jackson')
+    implementation('jakarta.annotation:jakarta.annotation-api')
+    compileOnly('org.graalvm.nativeimage:svm')
+
+    implementation('io.micronaut:micronaut-validation')
 }
 
 tasks.withType(Jar).configureEach { manifest { attributes(['Implementation-Version': project.getVersion()]) } }
