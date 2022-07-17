@@ -7,7 +7,7 @@ import picocli.CommandLine;
 @Data
 @CommandLine.Command(resourceBundle = "info.ankin.projects.cli.messagebus.mixin.Mixin")
 public class ConnectionInfo {
-    @CommandLine.Option(names = {"-t", "--broker-type"},
+    @CommandLine.Option(names = {"-T", "--broker-type"},
             descriptionKey = "brokerType.descriptionKey")
     BrokerType brokerType;
 
@@ -18,6 +18,9 @@ public class ConnectionInfo {
     @CommandLine.Option(names = {"-i", "--identifier"},
             descriptionKey = "identifier.descriptionKey")
     String identifier;
+
+    @CommandLine.Option(names = {"-t", "--topic"})
+    String topic;
 
     @CommandLine.Option(names = {"-g", "--group"},
             descriptionKey = "group.descriptionKey")

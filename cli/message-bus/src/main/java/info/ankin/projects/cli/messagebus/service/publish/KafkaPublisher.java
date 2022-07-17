@@ -10,7 +10,6 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import reactor.core.publisher.Mono;
 
 import java.util.Properties;
-import java.util.concurrent.CompletableFuture;
 
 import static org.apache.kafka.clients.producer.ProducerConfig.*;
 
@@ -30,7 +29,7 @@ public class KafkaPublisher implements Publisher {
         return initializeEagerly();
     }
 
-    private Properties toProducerProperties(BrokerInformation brokerInformation) {
+    Properties toProducerProperties(BrokerInformation brokerInformation) {
         Properties properties = new Properties();
         properties.put(KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         properties.put(VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
@@ -46,10 +45,9 @@ public class KafkaPublisher implements Publisher {
 
     @Override
     public Mono<Void> publish(Message message) {
-        CompletableFuture<RecordMetadata> cf = new CompletableFuture<>();
         CfWrapper<RecordMetadata> wrapper = new CfWrapper<>();
         kafkaProducer.send(toRecord(message), wrapper.getCallback()::accept);
-        return Mono.fromFuture(cf).then();
+        return Mono.fromFuture(wrapper.getCf()).then();
     }
 
     private ProducerRecord<String, String> toRecord(Message message) {

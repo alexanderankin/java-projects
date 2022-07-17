@@ -65,7 +65,8 @@ public class SettingsService {
                 input.getCredentials().getVirtualHost(),
                 input.getCredentials().determineUsername(),
                 input.getCredentials().determinePassword(),
-                input.getRetries()
+                input.getRetries(),
+                input.getTopic()
         );
     }
 

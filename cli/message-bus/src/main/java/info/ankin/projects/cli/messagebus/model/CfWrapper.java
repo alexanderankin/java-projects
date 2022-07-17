@@ -10,9 +10,11 @@ public class CfWrapper<T> {
     private final CompletableFuture<T> cf = new CompletableFuture<>();
 
     public BiConsumer<T, Exception> getCallback() {
-        return (t, e) -> {
-            if (e == null) cf.complete(t);
-            else cf.completeExceptionally(e);
-        };
+        return this::accept;
+    }
+
+    private void accept(T t, Exception e) {
+        if (e == null) cf.complete(t);
+        else cf.completeExceptionally(e);
     }
 }
