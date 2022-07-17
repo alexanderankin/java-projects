@@ -13,4 +13,5 @@ public class BrokerInformation {
     String virtualHost;
     String username;
     char[] password;
+    int retries;
 }

@@ -12,4 +12,6 @@ public class Settings {
      * default broker type
      */
     BrokerType type;
+    String identifier;
+    String group;
 }

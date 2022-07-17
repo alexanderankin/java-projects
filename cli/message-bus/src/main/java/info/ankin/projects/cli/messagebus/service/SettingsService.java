@@ -17,6 +17,8 @@ import reactor.core.scheduler.Schedulers;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 @Singleton
@@ -41,6 +43,10 @@ public class SettingsService {
         }
     }
 
+    private static String id() {
+        return "mb-" + UUID.randomUUID();
+    }
+
     public Mono<Void> persist() {
         return Mono.<Void>fromRunnable(this::persistSync).subscribeOn(Schedulers.boundedElastic());
     }
@@ -52,18 +58,30 @@ public class SettingsService {
 
     public BrokerInformation overlay(ConnectionInfo input) {
         BrokerType bt = getOrComplain("Could not determine broker type", input::getBrokerType, settings::getType);
+        String id = Objects.requireNonNullElseGet(getOrNull(input::getIdentifier, settings::getIdentifier), SettingsService::id);
         return new BrokerInformation(
                 bt,
                 input.getCredentials().getHost(),
                 input.getCredentials().getVirtualHost(),
                 input.getCredentials().determineUsername(),
-                input.getCredentials().determinePassword()
+                input.getCredentials().determinePassword(),
+                input.getRetries()
         );
     }
 
     @SafeVarargs
     @SuppressWarnings("SameParameterValue")
-    private <T> T getOrComplain(String message, Supplier<T>...supplier) {
+    private <T> T getOrComplain(String message, Supplier<T>... supplier) {
+        T t = getOrNull(supplier);
+        if (t != null) {
+            return t;
+        }
+        throw new MissingConfigurationException(message);
+    }
+
+    @SafeVarargs
+    @SuppressWarnings("SameParameterValue")
+    private <T> T getOrNull(Supplier<T>... supplier) {
         for (Supplier<T> s : supplier) {
             T t = s.get();
             if (t != null) {
@@ -71,6 +89,6 @@ public class SettingsService {
             }
         }
 
-        throw new MissingConfigurationException(message);
+        return null;
     }
 }
