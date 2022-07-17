@@ -14,4 +14,5 @@ public class BrokerInformation {
     String username;
     char[] password;
     int retries;
+    String topic;
 }

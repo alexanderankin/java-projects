@@ -19,6 +19,11 @@ public class Message {
     Long timestamp;
 
     /**
+     * kafka/rabbitmq concept
+     */
+    String key;
+
+    /**
      * What queue or partition the message came from
      */
     String partition;
@@ -33,6 +38,9 @@ public class Message {
      */
     Value body;
 
+    /**
+     * only {@link Value#getValue()} supported for outgoing messages
+     */
     @lombok.Value
     public static class Value {
         String value;
