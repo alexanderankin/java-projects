@@ -1,0 +1,46 @@
+import org.graalvm.buildtools.gradle.tasks.BuildNativeImageTask
+
+plugins {
+    id 'info.ankin.projects.app-conventions'
+}
+
+version = '0.0.1'
+
+dependencies {
+    implementation 'info.picocli:picocli:' + property('picocliVersion')
+    annotationProcessor 'info.picocli:picocli-codegen:' + property('picocliVersion')
+
+    implementation project(':lib:picocli:version-provider')
+
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+}
+
+application {
+    mainClass.set 'info.ankin.projects.cli.messagebus.MessageBus'
+}
+
+tasks.withType(Jar).configureEach { manifest { attributes(['Implementation-Version': project.getVersion()]) } }
+
+// https://graalvm.github.io/native-build-tools/0.9.13/gradle-plugin.html#configuration-options
+tasks.named('nativeCompile', BuildNativeImageTask) {
+    dependsOn tasks.shadowJar
+    classpathJar = tasks.shadowJar.outputs.files.singleFile
+    it.options.get().with {
+        // javaLauncher.set(javaToolchains.launcherFor {
+        //     languageVersion JavaLanguageVersion.of(17)
+        //     vendor = JvmVendorSpec.matching("GraalVM Community")
+        // })
+
+        // Main options
+        imageName.set 'message-bus'
+        mainClass.set application.mainClass.get()
+
+        debug.set false
+        verbose.set false
+        fallback.set false
+        buildArgs.add('-Ob') // faster development builds
+        useFatJar.set false
+    }
+}

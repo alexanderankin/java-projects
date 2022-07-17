@@ -14,7 +14,7 @@ application {
     mainClass.set 'info.ankin.projects.cli.killport.KillPort'
 }
 
-// https://graalvm.github.io/native-build-tools/0.9.11/gradle-plugin.html#_configuration_options
+// https://graalvm.github.io/native-build-tools/0.9.13/gradle-plugin.html#configuration-options
 graalvmNative {
     binaries {
         main {

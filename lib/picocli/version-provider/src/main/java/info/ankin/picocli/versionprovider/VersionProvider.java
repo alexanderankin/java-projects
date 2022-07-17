@@ -10,7 +10,7 @@ import picocli.CommandLine;
  * or <a href="https://stackoverflow.com/a/16646741/4971476">this guide</a>
  * for maven:
  * <pre>
- * tasks.withType(Jar) { manifest { attributes('Implementation-Version', '1.0') } }
+ * tasks.withType(Jar) { manifest { attributes(['Implementation-Version': '1.0']) } }
  * </pre>
  */
 public class VersionProvider implements CommandLine.IVersionProvider {
