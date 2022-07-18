@@ -4,6 +4,7 @@ import info.ankin.projects.cli.messagebus.model.BrokerInformation;
 import info.ankin.projects.cli.messagebus.model.BrokerType;
 import info.ankin.projects.cli.messagebus.model.CfWrapper;
 import info.ankin.projects.cli.messagebus.model.Message;
+import jakarta.inject.Singleton;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -13,6 +14,7 @@ import java.util.Properties;
 
 import static org.apache.kafka.clients.producer.ProducerConfig.*;
 
+@Singleton
 public class KafkaPublisher implements Publisher {
     private BrokerInformation brokerInformation;
     private KafkaProducer<String, String> kafkaProducer;
