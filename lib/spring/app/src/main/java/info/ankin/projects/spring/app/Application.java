@@ -27,7 +27,7 @@ public class Application {
                 }
 
                 private KeyStore getKeyStore() {
-                    return new OpenSslRunner().runOpenSsl();
+                    return new KeyStoreGenerator().call();
                 }
             };
         }

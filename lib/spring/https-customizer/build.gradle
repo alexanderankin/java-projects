@@ -4,4 +4,6 @@ plugins {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot'
+    implementation 'org.springframework.security:spring-security-rsa'
+    implementation 'io.netty:netty-handler'
 }

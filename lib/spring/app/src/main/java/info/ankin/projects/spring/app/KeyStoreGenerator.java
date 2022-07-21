@@ -1,30 +1,18 @@
-package info.ankin.projects.spring.httpscustomizer;
+package info.ankin.projects.spring.app;
 
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import lombok.SneakyThrows;
-import org.springframework.boot.web.server.ConfigurableWebServerFactory;
-import org.springframework.boot.web.server.Ssl;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.util.concurrent.Callable;
 
-public abstract class HttpsCustomizer<T extends ConfigurableWebServerFactory> implements WebServerFactoryCustomizer<T> {
-    @Override
-    public void customize(T factory) {
-        factory.setSsl(new Ssl());
-        factory.setSslStoreProvider(KeyStoreProvider.of(getKeyStore()));
-    }
-
-    /**
-     * If you generate this yourself (e.g. with OpenSSL cli)
-     * you will need to parse it, like so:
-     * <a href="https://stackoverflow.com/a/12514888">stackoverflow link</a>.
-     */
+public class KeyStoreGenerator implements Callable<KeyStore> {
     @SneakyThrows
-    protected KeyStore getKeyStore() {
+    @Override
+    public KeyStore call() {
         SelfSignedCertificate selfSignedCertificate = new SelfSignedCertificate();
         X509Certificate cert = selfSignedCertificate.cert();
         PrivateKey key = selfSignedCertificate.key();
