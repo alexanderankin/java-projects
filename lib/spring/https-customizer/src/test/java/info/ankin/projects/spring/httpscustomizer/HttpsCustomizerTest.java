@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class HttpsCustomizerTest {
-    HttpsCustomizer<?> h = new HttpsCustomizer<>(null){
+    HttpsCustomizer<?> h = new HttpsCustomizer<>(new HttpsCustomizerProperties()){
     };
 
     @SneakyThrows
