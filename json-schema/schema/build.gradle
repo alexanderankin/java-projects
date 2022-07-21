@@ -2,11 +2,6 @@ plugins {
     id 'info.ankin.projects.library-conventions'
 }
 
-java {
-    sourceCompatibility JavaVersion.VERSION_17
-    targetCompatibility JavaVersion.VERSION_17
-}
-
 version = '0.0.1'
 
 dependencies {

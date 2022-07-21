@@ -52,9 +52,7 @@ public class TypeFieldStringOrArrayTest {
      */
     @Test
     void test1() {
-        String input1 = """
-                "ENUM"
-                """;
+        String input1 = "\"ENUM\"";
 
         Representation output1 = parse(input1);
         System.out.println("output1: " + output1);
@@ -68,9 +66,7 @@ public class TypeFieldStringOrArrayTest {
      */
     @Test
     void test2() {
-        String input2 = """
-                ["ENUM", "ARRAY"]
-                """;
+        String input2 = "[\"ENUM\", \"ARRAY\"]";
         Representation output2 = parse(input2);
         System.out.println("output2: " + output2);
         assertThat(output2, is(instanceOf(Representation2.class)));
