@@ -1,3 +1,7 @@
 plugins {
     id 'info.ankin.projects.spring-application-conventions'
 }
+
+dependencies {
+    implementation(project(':lib:spring:https-customizer'))
+}

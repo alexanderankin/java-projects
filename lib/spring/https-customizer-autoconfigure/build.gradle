@@ -1,12 +1,14 @@
 plugins {
     id 'info.ankin.projects.spring-conventions'
-    id 'info.ankin.projects.library-conventions'
 }
 
 dependencies {
-    api 'org.springframework.boot:spring-boot'
-    implementation 'org.springframework.security:spring-security-rsa'
-    implementation 'io.netty:netty-handler'
+    implementation project(':lib:spring:https-customizer')
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    compileOnly 'org.mapstruct:mapstruct:1.5.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
 
     itestImplementation 'org.springframework.boot:spring-boot-starter-webflux'
     itestImplementation 'org.springframework.boot:spring-boot-starter-test'
