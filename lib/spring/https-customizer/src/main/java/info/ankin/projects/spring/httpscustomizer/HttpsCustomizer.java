@@ -12,9 +12,17 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
 public abstract class HttpsCustomizer<T extends ConfigurableWebServerFactory> implements WebServerFactoryCustomizer<T> {
+    private final HttpsCustomizerProperties properties;
+
+    protected HttpsCustomizer(HttpsCustomizerProperties properties) {
+        this.properties = properties;
+    }
+
     @Override
     public void customize(T factory) {
-        factory.setSsl(new Ssl());
+        Ssl ssl = new Ssl();
+        ssl.setKeyPassword("");
+        factory.setSsl(ssl);
         factory.setSslStoreProvider(KeyStoreProvider.of(getKeyStore()));
     }
 
@@ -25,7 +33,13 @@ public abstract class HttpsCustomizer<T extends ConfigurableWebServerFactory> im
      */
     @SneakyThrows
     protected KeyStore getKeyStore() {
-        SelfSignedCertificate selfSignedCertificate = new SelfSignedCertificate();
+        SelfSignedCertificate selfSignedCertificate = new SelfSignedCertificate(
+                properties.getFqdn(),
+                properties.getNotBefore(),
+                properties.getNotAfter(),
+                properties.getAlgorithm(),
+                properties.getBits()
+        );
         X509Certificate cert = selfSignedCertificate.cert();
         PrivateKey key = selfSignedCertificate.key();
         return assemble(key, cert);

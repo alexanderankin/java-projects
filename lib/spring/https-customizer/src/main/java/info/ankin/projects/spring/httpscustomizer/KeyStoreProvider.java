@@ -16,12 +16,12 @@ public class KeyStoreProvider implements SslStoreProvider {
     }
 
     @Override
-    public KeyStore getKeyStore() throws Exception {
-        return null;
+    public KeyStore getKeyStore() {
+        return keyStore;
     }
 
     @Override
-    public KeyStore getTrustStore() throws Exception {
+    public KeyStore getTrustStore() {
         return null;
     }
 }
