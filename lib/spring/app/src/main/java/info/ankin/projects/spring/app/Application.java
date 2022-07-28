@@ -15,12 +15,12 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    @Configuration
-    public static class Config {
-        @Bean
-        public WebServerFactoryCustomizer<NettyReactiveWebServerFactory> customizer() {
-            return new NettyHttpsCustomizer(new HttpsCustomizerProperties());
-        }
-    }
+    // @Configuration
+    // public static class Config {
+    //     @Bean
+    //     public WebServerFactoryCustomizer<NettyReactiveWebServerFactory> customizer() {
+    //         return new NettyHttpsCustomizer(new HttpsCustomizerProperties());
+    //     }
+    // }
 
 }

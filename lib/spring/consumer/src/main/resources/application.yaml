@@ -1,0 +1,4 @@
+#https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/spring-cloud-stream.html#_functional_binding_names
+spring.cloud.stream.function.bindings:
+  input-in-0: myDestination
+server.port: 3006
