@@ -56,7 +56,7 @@ public class Htpasswd {
             case sha:
                 return PasswordEncryption.sha;
         }
-        return null;
+        throw new UnknownEncryptionException();
     }
 
     public boolean check(HtpasswdEntry entry, char[] input) {
