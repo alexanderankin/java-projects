@@ -4,3 +4,9 @@ plugins {
     id 'org.graalvm.buildtools.native'
     id 'com.github.johnrengelman.shadow'
 }
+
+dependencies {
+    constraints {
+        implementation 'info.picocli:picocli:4.6.3'
+    }
+}

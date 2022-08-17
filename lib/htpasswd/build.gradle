@@ -1,0 +1,10 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+    id 'info.ankin.projects.spring-conventions'
+}
+
+dependencies {
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+    implementation 'commons-codec:commons-codec'
+    implementation 'org.apache.commons:commons-lang3'
+}
