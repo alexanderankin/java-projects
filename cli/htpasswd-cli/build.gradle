@@ -1,0 +1,11 @@
+plugins {
+    id 'info.ankin.projects.app-conventions'
+    id 'info.ankin.projects.spring-conventions'
+}
+
+dependencies {
+    implementation 'info.picocli:picocli'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'org.slf4j:slf4j-simple'
+    implementation project(':lib:htpasswd')
+}
