@@ -26,7 +26,7 @@ public class Htpasswd {
     public HtpasswdEntry parse(String line) {
         if (line.indexOf(':') < 0) return null;
         String[] parts = line.split(":");
-        return new HtpasswdEntry(parts[0], recognize(parts[1]), parts[1].toCharArray());
+        return new HtpasswdEntry(parts[0], recognize(parts[1]), parts[1]);
     }
 
     public PasswordEncryption recognize(String line) {
@@ -71,20 +71,20 @@ public class Htpasswd {
         return create(entry.getUsername(), encryption, password);
     }
 
-    public char[] encrypt(SupportedEncryption encryption, char[] password) {
+    public String encrypt(SupportedEncryption encryption, char[] password) {
         if (encryption == null) return null;
         byte[] bytes = toBytes(password);
         switch (encryption) {
             case crypt:
-                return Crypt.crypt(bytes).toCharArray();
+                return Crypt.crypt(bytes);
             case bcrypt:
-                return OpenBSDBCrypt.generate(todoVerifyMe(password), randomBcryptBytes(), htpasswdProperties.getBcryptCost()).toCharArray();
+                return OpenBSDBCrypt.generate(todoVerifyMe(password), randomBcryptBytes(), htpasswdProperties.getBcryptCost());
             case md5:
-                return Md5Crypt.apr1Crypt(bytes).toCharArray();
+                return Md5Crypt.apr1Crypt(bytes);
             case sha:
-                return ("{SHA}" + Base64.encodeBase64String(DigestUtils.sha1(bytes))).toCharArray();
+                return ("{SHA}" + Base64.encodeBase64String(DigestUtils.sha1(bytes)));
             case plain:
-                return password;
+                return new String(password);
             default:
                 throw new UnknownEncryptionException();
         }
@@ -95,19 +95,18 @@ public class Htpasswd {
         return new String(password).getBytes(StandardCharsets.UTF_8);
     }
 
-    public boolean verify(char[] password, PasswordEncryption encryption, char[] input) {
+    public boolean verify(String hash, PasswordEncryption encryption, char[] input) {
         if (encryption == null) return false;
-        String hash = new String(password);
 
         switch (encryption) {
             case crypt_or_plain:
-                return Crypt.crypt(toBytes(input), hash).equals(hash) || Arrays.equals(password, input);
+                return Crypt.crypt(toBytes(input), hash).equals(hash) || Arrays.equals(hash.toCharArray(), input);
             case bcrypt:
                 return OpenBSDBCrypt.checkPassword(hash, input);
             case md5:
                 return Md5Crypt.apr1Crypt(toBytes(input), hash).equals(hash);
             case sha:
-                return Arrays.equals(password, encrypt(SupportedEncryption.sha, input));
+                return hash.equals(encrypt(SupportedEncryption.sha, input));
             default:
                 throw new UnknownEncryptionException();
         }
@@ -116,7 +115,10 @@ public class Htpasswd {
     private byte[] toBytes(char[] password) {
         CharBuffer charBuffer = CharBuffer.wrap(password);
         ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(charBuffer);
-        return byteBuffer.array();
+        // https://stackoverflow.com/a/33791944
+        byte[] array = new byte[byteBuffer.limit()];
+        byteBuffer.get(array);
+        return array;
     }
 
     private byte[] randomBcryptBytes() {

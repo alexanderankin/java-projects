@@ -8,7 +8,7 @@ public class HtpasswdEntry {
 
     String username;
     PasswordEncryption encryption;
-    char[] password;
+    String password;
 
     public String toLine() {
         return username + HTPASSWD_LINE_SEPARATOR + new String(password);
