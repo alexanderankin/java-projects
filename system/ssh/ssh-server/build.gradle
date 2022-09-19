@@ -4,8 +4,16 @@ plugins {
 
 version = '0.0.1'
 
+repositories {
+    mavenCentral()
+    maven { url 'https://packages.jetbrains.team/maven/p/ij/intellij-dependencies'}
+}
+
 dependencies {
     implementation 'org.apache.sshd:sshd-core:2.9.1'
     implementation 'org.apache.sshd:sshd-scp:2.9.1'
     implementation 'org.slf4j:slf4j-simple:2.0.1'
+    implementation 'org.slf4j:log4j-over-slf4j:2.0.1'
+    implementation 'org.jetbrains.pty4j:pty4j:0.12.5'
+    implementation 'commons-io:commons-io:2.11.0'
 }

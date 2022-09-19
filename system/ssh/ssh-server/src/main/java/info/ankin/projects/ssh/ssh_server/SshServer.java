@@ -23,7 +23,7 @@ public class SshServer {
         try (org.apache.sshd.server.SshServer sshd = org.apache.sshd.server.SshServer.setUpDefaultServer()) {
             sshd.setPort(2021);
             sshd.setKeyPairProvider(new BouncyCastleGeneratorHostKeyProvider(null));
-            sshd.setShellFactory(InteractiveProcessShellFactory.INSTANCE);
+            sshd.setShellFactory(new TtyShellFactory());
             sshd.setCommandFactory(new ScpCommandFactory());
 
             sshd.setKeyboardInteractiveAuthenticator(new DefaultKeyboardInteractiveAuthenticator());
