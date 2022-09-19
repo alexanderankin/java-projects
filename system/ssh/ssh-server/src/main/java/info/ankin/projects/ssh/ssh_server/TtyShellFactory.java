@@ -3,6 +3,7 @@ package info.ankin.projects.ssh.ssh_server;
 import com.pty4j.PtyProcess;
 import com.pty4j.PtyProcessBuilder;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+@Slf4j
 public class TtyShellFactory implements ShellFactory {
     @SneakyThrows
     @Override
@@ -111,7 +113,12 @@ public class TtyShellFactory implements ShellFactory {
                 int value;
                 while ((value = a.read()) != -1) {
                     b.write(value);
-                    b.flush();
+                    try {
+                        b.flush();
+                    } catch (IOException e) {
+                        log.debug("could not flush stream", e);
+                        break;
+                    }
                 }
             }
         };
