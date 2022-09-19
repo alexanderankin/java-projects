@@ -4,9 +4,11 @@ import lombok.SneakyThrows;
 import org.apache.sshd.certificate.OpenSshCertificateBuilder;
 import org.apache.sshd.common.config.keys.OpenSshCertificate;
 import org.apache.sshd.common.keyprovider.KeyPairProvider;
+import org.apache.sshd.common.session.SessionContext;
 import org.apache.sshd.common.util.security.bouncycastle.BouncyCastleGeneratorHostKeyProvider;
 import org.apache.sshd.scp.server.ScpCommandFactory;
 import org.apache.sshd.server.auth.keyboard.DefaultKeyboardInteractiveAuthenticator;
+import org.apache.sshd.server.session.ServerSession;
 
 import java.security.KeyPair;
 import java.util.List;
@@ -16,11 +18,9 @@ import static org.apache.sshd.common.config.keys.KeyUtils.generateKeyPair;
 
 public class SshServer implements AutoCloseable {
     final org.apache.sshd.server.SshServer sshServer;
-    final List<OpenSshCertificate> genPairList;
 
     public SshServer() {
         sshServer = getSshServer();
-        genPairList = genPair();
     }
 
     @SneakyThrows
@@ -41,8 +41,8 @@ public class SshServer implements AutoCloseable {
 
         sshServer.setKeyboardInteractiveAuthenticator(new DefaultKeyboardInteractiveAuthenticator());
 
-        sshServer.setHostKeyCertificateProvider(session -> genPair());
-        sshServer.setPasswordAuthenticator((username, password, session) -> "user".equals(username) && "pass".equals(password));
+        sshServer.setHostKeyCertificateProvider(this::loadCertificates);
+        sshServer.setPasswordAuthenticator(this::authenticate);
         System.out.println("port: " + sshServer.getPort());
         sshServer.start();
         return sshServer;
@@ -62,4 +62,13 @@ public class SshServer implements AutoCloseable {
     public void close() {
         sshServer.close();
     }
+
+    private Iterable<OpenSshCertificate> loadCertificates(SessionContext session) {
+        return genPair();
+    }
+
+    private boolean authenticate(String username, String password, ServerSession session) {
+        return "user".equals(username) && "pass".equals(password);
+    }
+
 }
