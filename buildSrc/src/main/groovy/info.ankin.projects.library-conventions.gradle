@@ -9,6 +9,12 @@ java {
     withSourcesJar()
 }
 
+dependencies {
+    constraints {
+        implementation 'commons-io:commons-io:2.11.0'
+    }
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
