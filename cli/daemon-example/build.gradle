@@ -1,0 +1,14 @@
+include 'cli:daemon-example'
+plugins {
+    id 'info.ankin.projects.app-conventions'
+}
+
+application {
+    mainClass.set 'info.ankin.projects.cli.daemonexample.DaemonExample'
+}
+
+dependencies {
+    implementation 'commons-daemon:commons-daemon:1.3.2'
+    implementation 'org.kohsuke:akuma:1.10'
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
+}
