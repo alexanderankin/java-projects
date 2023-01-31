@@ -4,7 +4,7 @@ plugins {
     id 'signing'
 }
 
-version = '0.0.1'
+version = '0.0.2-SNAPSHOT'
 
 dependencies {
     implementation 'org.eclipse.jgit:org.eclipse.jgit.pgm:6.4.0.202211300538-r'
@@ -21,7 +21,7 @@ signing {
     sign publishing.publications.maven
 }
 
-// shadowJar.archiveClassifier.set ''
+shadowJar.archiveClassifier.set ''
 
 publishing {
     publications {
