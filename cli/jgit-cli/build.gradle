@@ -1,0 +1,55 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+    id 'com.github.johnrengelman.shadow' // version '7.1.2'
+    id 'signing'
+}
+
+version = '0.0.1'
+
+dependencies {
+    implementation 'org.eclipse.jgit:org.eclipse.jgit.pgm:6.4.0.202211300538-r'
+}
+
+tasks.named('jar') { enabled false }
+tasks.withType(Jar).configureEach {
+    manifest {
+        attributes 'Main-Class': 'org.eclipse.jgit.pgm.Main'
+    }
+}
+
+signing {
+    sign publishing.publications.maven
+}
+
+// shadowJar.archiveClassifier.set ''
+
+publishing {
+    publications {
+        named('maven', MavenPublication.class) {
+            pom {
+                name.set (project.group + ':' + project.name)
+                description.set 'JGit CLI by bundling deps of jgit.pgm and setting main class'
+                url.set 'https://github.com/alexanderankin/java-projects'
+                licenses {
+                    license {
+                        name.set 'The Apache License, Version 2.0'
+                        description.set 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        name.set 'David Ankin'
+                        email.set 'daveankin@gmail.com'
+                        organization.set 'java-projects'
+                        organizationUrl.set 'https://github.com/alexanderankin'
+                    }
+                }
+                scm {
+                    connection.set 'scm:git:git@github.com:alexanderankin/java-projects.git'
+                    developerConnection.set 'scm:git:git@github.com:alexanderankin/java-projects.git'
+                    url.set 'https://github.com/alexanderankin/java-projects/tree/main'
+                }
+            }
+        }
+    }
+}

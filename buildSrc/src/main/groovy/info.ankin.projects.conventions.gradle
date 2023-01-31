@@ -75,4 +75,4 @@ check.dependsOn integrationTest
 
 
 // use junit for all tests
-tasks.withType(Test) { t -> t.useJUnitPlatform() }
+tasks.withType(Test).configureEach { t -> t.useJUnitPlatform() }
