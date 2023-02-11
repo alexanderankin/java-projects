@@ -4,10 +4,14 @@ plugins {
     id 'signing'
 }
 
-version = '0.0.2-SNAPSHOT'
+version = '0.0.1'
 
 dependencies {
     implementation 'org.eclipse.jgit:org.eclipse.jgit.pgm:6.4.0.202211300538-r'
+    implementation 'commons-codec:commons-codec:1.13'
+    implementation 'org.eclipse.jetty:jetty-io:10.0.13'
+    implementation 'org.eclipse.jetty:jetty-http:10.0.13'
+    implementation 'org.eclipse.jetty:jetty-server:10.0.13'
 }
 
 tasks.named('jar') { enabled false }
@@ -26,6 +30,7 @@ shadowJar.archiveClassifier.set ''
 publishing {
     publications {
         named('maven', MavenPublication.class) {
+            artifact project.tasks.shadowJar
             pom {
                 name.set (project.group + ':' + project.name)
                 description.set 'JGit CLI by bundling deps of jgit.pgm and setting main class'
