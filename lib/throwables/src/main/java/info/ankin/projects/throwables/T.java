@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 import java.util.function.*;
 
 public class T {
-    public static Runnable of(T.ThrowingRunnable other) {
+    public static Runnable of(ThrowingRunnable other) {
         return other;
     }
 
