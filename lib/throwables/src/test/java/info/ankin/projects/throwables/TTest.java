@@ -1,12 +1,31 @@
 package info.ankin.projects.throwables;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Slf4j
 class TTest {
     static Exception e() {
         return new Exception("oh no");
+    }
+
+    @Test
+    void showUsage() {
+        class MyOperation {
+            String process(String input) throws Exception {
+                if (input == null) throw new Exception("'input' was null");
+                return input.toUpperCase();
+            }
+        }
+
+        MyOperation o = new MyOperation();
+        Stream.of("a", "b", "c")
+                .map(T.of(o::process))
+                .forEach(log::debug);
     }
 
     @Test
