@@ -1,0 +1,12 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+    id 'info.ankin.projects.spring-conventions'
+}
+
+version = '0.0.1'
+
+dependencies {
+    implementation('org.slf4j:slf4j-api')
+    implementation('org.springframework:spring-webflux')
+//    testImplementation 'org.eclipse.jgit:org.eclipse.jgit:6.4.0.202211300538-r'
+}
