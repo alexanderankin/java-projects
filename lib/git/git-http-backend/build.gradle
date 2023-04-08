@@ -9,5 +9,9 @@ dependencies {
     implementation('org.slf4j:slf4j-api')
     implementation 'commons-io:commons-io:2.11.0'
     implementation('org.springframework:spring-webflux')
+    implementation('io.projectreactor.netty:reactor-netty') {
+        exclude(group: 'io.projectreactor.netty.incubator')
+    }
+    testImplementation 'commons-codec:commons-codec:1.13'
 //    testImplementation 'org.eclipse.jgit:org.eclipse.jgit:6.4.0.202211300538-r'
 }
