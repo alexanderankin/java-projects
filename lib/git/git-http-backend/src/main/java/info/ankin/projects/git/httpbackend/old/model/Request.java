@@ -1,4 +1,4 @@
-package info.ankin.projects.git.httpbackend.model;
+package info.ankin.projects.git.httpbackend.old.model;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

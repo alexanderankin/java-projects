@@ -1,4 +1,4 @@
-package info.ankin.projects.git.httpbackend.model.exception;
+package info.ankin.projects.git.httpbackend.old.model.exception;
 
 public class NoSuchServiceException extends GitHttpBackendException{
     public NoSuchServiceException() {

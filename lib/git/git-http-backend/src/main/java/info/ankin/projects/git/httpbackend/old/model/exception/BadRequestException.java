@@ -1,4 +1,4 @@
-package info.ankin.projects.git.httpbackend.model.exception;
+package info.ankin.projects.git.httpbackend.old.model.exception;
 
 public class BadRequestException extends GitHttpBackendException {
     public BadRequestException(String message) {
