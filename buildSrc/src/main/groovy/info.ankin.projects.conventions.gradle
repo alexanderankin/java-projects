@@ -27,7 +27,7 @@ sourceSets {
 idea {
     module {
         sourceDirs -= file('src/itest/java')
-        testSourceDirs += file('src/itest/java')
+        testSources.from file('src/itest/java')
     }
 }
 
