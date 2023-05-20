@@ -1,0 +1,5 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+}
+
+version '1.0.0'

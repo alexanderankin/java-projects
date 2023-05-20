@@ -3,6 +3,8 @@ plugins {
     id 'info.ankin.projects.spring-conventions'
 }
 
+enableConventionConstraints()
+
 version = '0.0.1'
 
 dependencies {
