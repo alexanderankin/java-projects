@@ -5,10 +5,21 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DefaultDataBuffer;
+import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
+import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -77,7 +88,51 @@ public class GitHttpBackend
     }
 
     public Mono<ClientResponse> apply(ClientRequest clientRequest) {
+        // map.put("PATH_INFO", pathInfo);
+        // map.put("REMOTE_USER", remoteUser);
+        // map.put("REMOTE_ADDR", remoteAddr);
+        // map.put("CONTENT_TYPE", contentType);
+        // map.put("QUERY_STRING", queryString);
+        // map.put("REQUEST_METHOD", requestMethod);
+        return Mono.fromCallable(() -> doApply(clientRequest));
+    }
+
+    private ClientResponse doApply(ClientRequest clientRequest) {
+        // return ClientResponse.create(HttpStatus.OK)
+        //         .body(Flux.from)
+        //         .build()
         throw new UnsupportedOperationException();
+    }
+
+    // https://stackoverflow.com/a/49549721
+    private Mono<ServerResponse> writeToServerResponse(InputStream inputStream) {
+        // final long blobSize = tag.getBlobSize();
+        long blobSize = 1;
+        long tagChunkSize = 1;
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(Flux.create(emitter -> {
+                                    // for a huge blob I want to read it in chunks, so that my server doesn't use too much memory
+                                    for (int i = 0; i < blobSize; i += tagChunkSize) {
+                                        // new DataBuffer that is written to, then emitted later
+                                        DefaultDataBuffer dataBuffer = new DefaultDataBufferFactory().allocateBuffer();
+                                        try (OutputStream outputStream = dataBuffer.asOutputStream()) {
+                                            // write to the output stream of DataBuffer
+                                            // tag.BlobReadPartial(outputStream, i, tagChunkSize, FPLibraryConstants.FP_OPTION_DEFAULT_OPTIONS);
+                                            // don't know if flushing is strictly necessary
+                                            outputStream.flush();
+                                        } catch (IOException e) {
+                                            log.error("Error reading + writing from tag to http outputstream", e);
+                                            emitter.error(e);
+                                        }
+                                        emitter.next(dataBuffer);
+                                    }
+                                    // if blob is finished, send "complete" to my flux of DataBuffers
+                                    emitter.complete();
+                                }, FluxSink.OverflowStrategy.BUFFER)
+                                .publishOn(Schedulers.boundedElastic())
+                        ,
+                        DataBuffer.class);
     }
 
     /**
