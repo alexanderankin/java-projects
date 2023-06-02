@@ -1,9 +1,14 @@
 package info.ankin.projects.ds;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class WritableEntryListMap<K, V> extends EntryListMap<K, V> {
+    public WritableEntryListMap() {
+        this(new ArrayList<>());
+    }
+
     public WritableEntryListMap(List<Entry<K, V>> entryList) {
         super(entryList);
         Objects.requireNonNull(entryList, "entryList must not be null");
