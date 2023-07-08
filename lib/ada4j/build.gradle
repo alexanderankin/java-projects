@@ -1,0 +1,12 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+}
+
+java {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:24.0.0'
+}
