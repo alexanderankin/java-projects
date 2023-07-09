@@ -7,17 +7,17 @@ import lombok.experimental.Accessors;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public interface Responses {
+public interface Wrappers {
 
     @Data
     @Accessors(chain = true)
-    class SingleResponse<T> {
+    class Single<T> {
         Item<T> data;
     }
 
     @Data
     @Accessors(chain = true)
-    class ListResponse<T> {
+    class Multiple<T> {
         List<Item<T>> data;
         Links links;
         Meta meta;
@@ -29,7 +29,7 @@ public interface Responses {
         String id;
         String type;
         T attributes;
-        LinkedHashMap<String, ListResponse<?>> relationships;
+        LinkedHashMap<String, Multiple<?>> relationships;
         Links links;
     }
 

@@ -5,7 +5,22 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 public interface Models {
-    class SingleUser extends Responses.SingleResponse<User> {
+    class SingleUser extends Wrappers.Single<User> {
+    }
+
+    class UserItem extends Wrappers.Item<User> {
+        public UserItem() {
+            setType("users");
+        }
+    }
+
+    class SingleUserUpdate extends Wrappers.Single<UserUpdate> {
+    }
+
+    class UserUpdateItem extends Wrappers.Item<UserUpdate> {
+        public UserUpdateItem() {
+            setType("users");
+        }
     }
 
     @Data
@@ -70,6 +85,20 @@ public interface Models {
             @JsonProperty("can-view-settings")
             Boolean viewSettings;
         }
+    }
+
+    @Data
+    @Accessors(chain = true)
+    class UserUpdate {
+        /**
+         * email can't be blank
+         */
+        String email;
+
+        /**
+         * username can't be blank
+         */
+        String username;
     }
 
 }
