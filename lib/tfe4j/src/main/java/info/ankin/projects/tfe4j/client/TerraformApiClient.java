@@ -3,7 +3,6 @@ package info.ankin.projects.tfe4j.client;
 import info.ankin.projects.tfe4j.client.model.JsonApiErrors;
 import info.ankin.projects.tfe4j.client.model.Models;
 import info.ankin.projects.tfe4j.client.model.TerraformClientResponseException;
-import info.ankin.projects.tfe4j.client.model.Wrappers;
 import lombok.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -45,32 +44,52 @@ public class TerraformApiClient {
     public static class AccountOps {
         TerraformApiClient terraformApiClient;
 
+        //<editor-fold desc="read current">
+        @SuppressWarnings("unused")
         public Mono<Models.SingleUser> readCurrent() {
             return terraformApiClient.webClient.get().uri("/account/details").retrieve().bodyToMono(Models.SingleUser.class);
         }
 
+        /**
+         * like {@link #readCurrent()} except returns entity with headers
+         */
         public Mono<ResponseEntity<Models.SingleUser>> readCurrentEntity() {
             return terraformApiClient.webClient.get().uri("/account/details").retrieve().toEntity(Models.SingleUser.class);
         }
+        //</editor-fold>
 
+        //<editor-fold desc="update current">
         public Mono<Models.SingleUser> updateCurrent(Models.SingleUserUpdate update) {
             return terraformApiClient.webClient.patch().uri("/account/update").bodyValue(update).retrieve().bodyToMono(Models.SingleUser.class);
         }
 
+        /**
+         * like {@link #updateCurrent(Models.SingleUserUpdate)} except it shows how to wrap in items and singles
+         */
+        @SuppressWarnings("unused")
+        public Mono<Models.SingleUser> updateCurrent(Models.UserUpdate update) {
+            return updateCurrent(update.toItem().toSingle());
+        }
+
+        /**
+         * like {@link #updateCurrent(Models.SingleUserUpdate)} except returns entity with headers
+         */
         public Mono<ResponseEntity<Models.SingleUser>> updateCurrentEntity(Models.SingleUserUpdate update) {
             return terraformApiClient.webClient.patch().uri("/account/update").bodyValue(update).retrieve().toEntity(Models.SingleUser.class);
         }
+        //</editor-fold>
 
-        private Mono<Models.SingleUser> updateCurrent(Wrappers.Item<Models.UserUpdate> userUpdateItem) {
-            return updateCurrent((Models.SingleUserUpdate) new Models.SingleUserUpdate().setData(userUpdateItem));
+        @SuppressWarnings("unused")
+        public Mono<Models.SingleUser> updateCurrentPassword(Models.UserPasswordUpdate update) {
+            return terraformApiClient.webClient.patch().uri("/account/password").bodyValue(update.toItem().toSingle()).retrieve().bodyToMono(Models.SingleUser.class);
         }
 
-        public Mono<Models.SingleUser> updateCurrent(Models.UserUpdate update) {
-            return updateCurrent(new Models.UserUpdateItem().setAttributes(update));
-        }
-
-        public Mono<ResponseEntity<Models.SingleUser>> updateCurrentEntity(Models.UserUpdate update) {
-            return terraformApiClient.webClient.patch().uri("/account/update").bodyValue(new Models.SingleUserUpdate().setData(new Models.UserUpdateItem().setAttributes(update))).retrieve().toEntity(Models.SingleUser.class);
+        /**
+         * like {@link #updateCurrentPassword(Models.UserPasswordUpdate)} except returns entity with headers
+         */
+        @SuppressWarnings("unused")
+        public Mono<ResponseEntity<Models.SingleUser>> updateCurrentPasswordEntity(Models.UserPasswordUpdate update) {
+            return terraformApiClient.webClient.patch().uri("/account/password").bodyValue(update.toItem().toSingle()).retrieve().toEntity(Models.SingleUser.class);
         }
 
     }

@@ -22,7 +22,7 @@ class TerraformEnterpriseClientTest extends BaseTest {
     @SneakyThrows
     @Test
     void test_accountOps_readCurrent() {
-        log.debug("{}", terraformEnterpriseClient.accountOps().readCurrent().block());
+        log.debug("{}", terraformEnterpriseClient.accountOps().readCurrentEntity().block());
     }
 
     @SneakyThrows
@@ -56,7 +56,7 @@ class TerraformEnterpriseClientTest extends BaseTest {
     @SneakyThrows
     @Test
     void test_accountOps_updateCurrent() {
-        log.info("{}", terraformEnterpriseClient.accountOps().updateCurrentEntity(new Models.UserUpdate().setUsername("daveankin-btest").setEmail("daveankin+btest@gmail.com")).block());
+        log.info("{}", terraformEnterpriseClient.accountOps().updateCurrentEntity(new Models.UserUpdate().setUsername("daveankin-btest").setEmail("daveankin+btest@gmail.com").toItem().toSingle()).block());
     }
 
     @SneakyThrows

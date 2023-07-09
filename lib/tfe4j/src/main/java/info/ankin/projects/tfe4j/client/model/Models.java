@@ -5,20 +5,12 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 public interface Models {
+    //<editor-fold desc="user">
     class SingleUser extends Wrappers.Single<User> {
     }
 
     class UserItem extends Wrappers.Item<User> {
         public UserItem() {
-            setType("users");
-        }
-    }
-
-    class SingleUserUpdate extends Wrappers.Single<UserUpdate> {
-    }
-
-    class UserUpdateItem extends Wrappers.Item<UserUpdate> {
-        public UserUpdateItem() {
             setType("users");
         }
     }
@@ -86,6 +78,22 @@ public interface Models {
             Boolean viewSettings;
         }
     }
+    //</editor-fold>
+
+    //<editor-fold desc="user update">
+    class SingleUserUpdate extends Wrappers.Single<UserUpdate> {
+    }
+
+    class UserUpdateItem extends Wrappers.Item<UserUpdate> {
+        public UserUpdateItem() {
+            setType("users");
+        }
+
+        @Override
+        public SingleUserUpdate toSingle() {
+            return (SingleUserUpdate) new SingleUserUpdate().setData(this);
+        }
+    }
 
     @Data
     @Accessors(chain = true)
@@ -99,6 +107,41 @@ public interface Models {
          * username can't be blank
          */
         String username;
+
+        public UserUpdateItem toItem() {
+            return (UserUpdateItem) new UserUpdateItem().setAttributes(this);
+        }
     }
+    //</editor-fold>
+
+    //<editor-fold desc="user password update">
+    class SingleUserPasswordUpdate extends Wrappers.Single<UserPasswordUpdate> {
+    }
+
+    class UserPasswordUpdateItem extends Wrappers.Item<UserPasswordUpdate> {
+        public UserPasswordUpdateItem() {
+            setType("users");
+        }
+
+        @Override
+        public SingleUserPasswordUpdate toSingle() {
+            return (SingleUserPasswordUpdate) new SingleUserPasswordUpdate().setData(this);
+        }
+    }
+
+    @Data
+    @Accessors(chain = true)
+    class UserPasswordUpdate {
+        @JsonProperty("current_password")
+        String currentPassword;
+        String password;
+        @JsonProperty("password_confirmation")
+        String passwordConfirmation;
+
+        public UserPasswordUpdateItem toItem() {
+            return (UserPasswordUpdateItem) new UserPasswordUpdateItem().setAttributes(this);
+        }
+    }
+    //</editor-fold>
 
 }

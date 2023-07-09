@@ -31,6 +31,10 @@ public interface Wrappers {
         T attributes;
         LinkedHashMap<String, Multiple<?>> relationships;
         Links links;
+
+        public Single<T> toSingle() {
+            throw new UnsupportedOperationException("serializing this item to a single is not implemented: " + this);
+        }
     }
 
     @Data
