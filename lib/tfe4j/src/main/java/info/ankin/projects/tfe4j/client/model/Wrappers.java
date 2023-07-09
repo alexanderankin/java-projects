@@ -52,6 +52,17 @@ public interface Wrappers {
     @Accessors(chain = true)
     class Meta {
         Pagination pagination;
+        // for list results?
+        @JsonProperty("status-counts")
+        StatusCounts statusCounts;
+
+        @Data
+        @Accessors(chain = true)
+        public static class StatusCounts {
+            Integer total;
+            Integer active;
+            Integer disabled;
+        }
     }
 
     @Data

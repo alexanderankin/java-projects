@@ -144,4 +144,38 @@ public interface Models {
     }
     //</editor-fold>
 
+    //<editor-fold desc="ent/admin/org">
+    class MultipleOrganizations extends Wrappers.Multiple<Organization> {
+    }
+
+    @Data
+    @Accessors(chain = true)
+    class Organization {
+        String name;
+        @JsonProperty("access-beta-tools")
+        Boolean accessBetaTools;
+        @JsonProperty("external-id")
+        String externalID;
+        @JsonProperty("global-module-sharing")
+        Boolean globalModuleSharing;
+        @JsonProperty("is-disabled")
+        Boolean isDisabled;
+        @JsonProperty("notification-email")
+        String notificationEmail;
+        @JsonProperty("sso-enabled")
+        Boolean ssoEnabled;
+        @JsonProperty("terraform-build-worker-apply-timeout")
+        String terraformBuildWorkerApplyTimeout;
+        @JsonProperty("terraform-build-worker-plan-timeout")
+        String terraformBuildWorkerPlanTimeout;
+        @JsonProperty("terraform-worker-sudo-enabled")
+        Boolean terraformWorkerSudoEnabled;
+        @JsonProperty("workspace-limit")
+        Integer workspaceLimit;
+        // not implemented in go-tfe
+        @JsonProperty("global-provider-sharing")
+        Boolean globalProviderSharing;
+    }
+    //</editor-fold>
+
 }
