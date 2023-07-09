@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-public class TerraformApiClient {
+public abstract class TerraformApiClient {
     protected final WebClient webClient;
 
     public TerraformApiClient(WebClient.Builder builder) {

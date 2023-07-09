@@ -21,8 +21,8 @@ public class TerraformEnterpriseClient extends TerraformApiClient {
     public static class AdminOps {
         TerraformEnterpriseClient terraformEnterpriseClient;
 
-        public Mono<String> list() {
-            return terraformEnterpriseClient.webClient.get().uri("/organizations").retrieve().bodyToMono(String.class);
+        public Mono<String> listOrganizations() {
+            return terraformEnterpriseClient.webClient.get().uri("/admin/organizations").retrieve().bodyToMono(String.class);
         }
 
         /*

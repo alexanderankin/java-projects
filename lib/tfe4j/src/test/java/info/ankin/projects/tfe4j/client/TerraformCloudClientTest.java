@@ -11,18 +11,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-class TerraformEnterpriseClientTest extends BaseTest {
+class TerraformCloudClientTest extends BaseTest {
 
-    TerraformEnterpriseClient terraformEnterpriseClient = new TerraformEnterpriseClient(WebClient.builder().defaultHeaders(h -> h.setBearerAuth(USER_TOKEN)));
+    TerraformCloudClient terraformCloudClient = new TerraformCloudClient(WebClient.builder().defaultHeaders(h -> h.setBearerAuth(USER_TOKEN)));
 
     @Disabled
     @SneakyThrows
     @Test
     void test_accountOps_readCurrent() {
-        log.debug("{}", terraformEnterpriseClient.accountOps().readCurrentEntity().block());
+        log.debug("{}", terraformCloudClient.accountOps().readCurrentEntity().block());
     }
 
     @SneakyThrows
@@ -56,7 +56,7 @@ class TerraformEnterpriseClientTest extends BaseTest {
     @SneakyThrows
     @Test
     void test_accountOps_updateCurrent() {
-        log.info("{}", terraformEnterpriseClient.accountOps().updateCurrentEntity(new Models.UserUpdate().setUsername("daveankin-btest").setEmail("daveankin+btest@gmail.com").toItem().toSingle()).block());
+        log.info("{}", terraformCloudClient.accountOps().updateCurrentEntity(new Models.UserUpdate().setUsername("daveankin-btest").setEmail("daveankin+btest@gmail.com").toItem().toSingle()).block());
     }
 
     @SneakyThrows
@@ -134,5 +134,4 @@ class TerraformEnterpriseClientTest extends BaseTest {
                 ),
                 OBJECT_MAPPER.readValue(sampleResponse, Models.SingleUser.class));
     }
-
 }
