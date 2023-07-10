@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface Wrappers {
 
@@ -29,8 +30,9 @@ public interface Wrappers {
         String id;
         String type;
         T attributes;
-        LinkedHashMap<String, Multiple<?>> relationships;
+        LinkedHashMap<String, Relationship<?>> relationships;
         Links links;
+        Meta meta;
 
         public Single<T> toSingle() {
             throw new UnsupportedOperationException("serializing this item to a single is not implemented: " + this);
@@ -54,8 +56,9 @@ public interface Wrappers {
         Pagination pagination;
         // for list results?
         @JsonProperty("status-counts")
-        StatusCounts statusCounts;
+        Map<String, Integer> statusCounts;
 
+        // temporarily reconsidering after seeing one list in admin/org and other in admin/runs
         @Data
         @Accessors(chain = true)
         public static class StatusCounts {
@@ -80,4 +83,15 @@ public interface Wrappers {
         Integer totalCount;
     }
 
+    // todo verify this - just copied item and changed attributes to data.
+    @Data
+    @Accessors(chain = true)
+    class Relationship<T> {
+        String id;
+        String type;
+        T data;
+        LinkedHashMap<String, Item<?>> relationships;
+        Links links;
+        Meta meta;
+    }
 }

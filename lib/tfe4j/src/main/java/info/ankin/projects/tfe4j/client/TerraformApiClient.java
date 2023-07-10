@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import info.ankin.projects.tfe4j.client.model.JsonApiErrors;
 import info.ankin.projects.tfe4j.client.model.Models;
 import info.ankin.projects.tfe4j.client.model.TerraformClientResponseException;
+import lombok.Getter;
 import lombok.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public abstract class TerraformApiClient {
     protected static final TypeReference<Map<String, String>> MAP_TYPE = new TypeReference<>() {
     };
+    @Getter
     protected final WebClient webClient;
     protected final ObjectMapper objectMapper = JsonMapper.builder().build();
 

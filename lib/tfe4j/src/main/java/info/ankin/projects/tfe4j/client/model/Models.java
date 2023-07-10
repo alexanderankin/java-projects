@@ -6,7 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface Models {
     /**
@@ -242,6 +244,91 @@ public interface Models {
 
         public SingleOrganizationItem toItem() {
             return (SingleOrganizationItem) new SingleOrganizationItem().setAttributes(this);
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="ent/admin/org">
+    @ToString(callSuper = true)
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    @Accessors(chain = true)
+    class ListRunsParameters extends PagingParameters {
+        @JsonProperty("q")
+        String query;
+        @JsonProperty("filter[status]")
+        List<Status> statusList;
+
+        public enum Status {
+            @JsonProperty("pending") PENDING,
+            @JsonProperty("plan_queued") PLAN_QUEUED,
+            @JsonProperty("planning") PLANNING,
+            @JsonProperty("planned") PLANNED,
+            @JsonProperty("confirmed") CONFIRMED,
+            @JsonProperty("apply_queued") APPLY_QUEUED,
+            @JsonProperty("applying") APPLYING,
+            @JsonProperty("applied") APPLIED,
+            @JsonProperty("discarded") DISCARDED,
+            @JsonProperty("errored") ERRORED,
+            @JsonProperty("canceled") CANCELED,
+            @JsonProperty("cost_estimating") COST_ESTIMATING,
+            @JsonProperty("cost_estimated") COST_ESTIMATED,
+            @JsonProperty("policy_checking") POLICY_CHECKING,
+            @JsonProperty("policy_override") POLICY_OVERRIDE,
+            @JsonProperty("policy_soft_failed") POLICY_SOFT_FAILED,
+            @JsonProperty("policy_checked") POLICY_CHECKED,
+            @JsonProperty("planned_and_finished") PLANNED_AND_FINISHED,
+        }
+    }
+
+    class MultipleRuns extends Wrappers.Multiple<Run> {
+    }
+
+    class SingleRun extends Wrappers.Single<Run> {
+    }
+
+    class SingleRunItem extends Wrappers.Item<Run> {
+        public SingleRunItem() {
+            setType("runs");
+        }
+
+        @Override
+        public SingleRun toSingle() {
+            return (SingleRun) new SingleRun().setData(this);
+        }
+    }
+
+    @Data
+    @Accessors(chain = true)
+    class Run {
+        @JsonProperty("created-at")
+        Date createdAt;
+        @JsonProperty("has-changes")
+        Boolean hasChanges;
+        ListRunsParameters.Status status;
+        @JsonProperty("status-timestamps")
+        Map<Status, Date> statusTimestamps;
+
+        // yes, they really have an -at which is different than normal status
+        public enum Status {
+            @JsonProperty("pending-at") PENDING,
+            @JsonProperty("plan_queued-at") PLAN_QUEUED,
+            @JsonProperty("planning-at") PLANNING,
+            @JsonProperty("planned-at") PLANNED,
+            @JsonProperty("confirmed-at") CONFIRMED,
+            @JsonProperty("apply_queued-at") APPLY_QUEUED,
+            @JsonProperty("applying-at") APPLYING,
+            @JsonProperty("applied-at") APPLIED,
+            @JsonProperty("discarded-at") DISCARDED,
+            @JsonProperty("errored-at") ERRORED,
+            @JsonProperty("canceled-at") CANCELED,
+            @JsonProperty("cost_estimating-at") COST_ESTIMATING,
+            @JsonProperty("cost_estimated-at") COST_ESTIMATED,
+            @JsonProperty("policy_checking-at") POLICY_CHECKING,
+            @JsonProperty("policy_override-at") POLICY_OVERRIDE,
+            @JsonProperty("policy_soft_failed-at") POLICY_SOFT_FAILED,
+            @JsonProperty("policy_checked-at") POLICY_CHECKED,
+            @JsonProperty("planned_and_finished-at") PLANNED_AND_FINISHED,
         }
     }
     //</editor-fold>

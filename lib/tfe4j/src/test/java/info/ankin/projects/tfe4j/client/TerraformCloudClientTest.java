@@ -127,7 +127,7 @@ class TerraformCloudClientTest extends BaseTest {
                                         .setChangeEmail(true)
                                         .setChangeUsername(true)))
                         .setRelationships(new LinkedHashMap<>(Map.of(
-                                "authentication-tokens", new Wrappers.Multiple<>()
+                                "authentication-tokens", new Wrappers.Relationship<>()
                                         .setLinks(new Wrappers.Links().setRelated("/api/v2/users/user-V3R563qtJNcExAkN/authentication-tokens"))
                         )))
                         .setLinks(new Wrappers.Links().setSelf("/api/v2/users/user-V3R563qtJNcExAkN"))

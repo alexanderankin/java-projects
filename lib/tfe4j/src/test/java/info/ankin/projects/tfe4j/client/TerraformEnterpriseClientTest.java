@@ -59,4 +59,18 @@ class TerraformEnterpriseClientTest extends BaseTest {
                                         "}\n", Models.SingleOrganization.class));
     }
 
+    @SneakyThrows
+    @Test
+    void test_adminOps_listOrgModuleConsumers_parsing() {
+        System.out.println(OBJECT_MAPPER.readValue(read("/info/ankin/projects/tfe4j/client/model/test_adminOps_listOrgModuleConsumers_parsing.response1.json"),
+                Models.MultipleOrganizations.class));
+    }
+
+    @SneakyThrows
+    @Test
+    void test_adminOps_listRuns_parsing() {
+        System.out.println(OBJECT_MAPPER.readValue(read("/info/ankin/projects/tfe4j/client/model/test_adminOps_listRuns_parsing.response1.json"),
+                Models.MultipleRuns.class));
+    }
+
 }
