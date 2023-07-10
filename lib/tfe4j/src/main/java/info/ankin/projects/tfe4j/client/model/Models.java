@@ -194,6 +194,9 @@ public interface Models {
     class MultipleOrganizations extends Wrappers.Multiple<Organization> {
     }
 
+    class SingleOrganization extends Wrappers.Single<Organization> {
+    }
+
     @Data
     @Accessors(chain = true)
     class Organization {

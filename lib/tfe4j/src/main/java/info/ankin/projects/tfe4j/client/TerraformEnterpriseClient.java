@@ -19,6 +19,7 @@ public class TerraformEnterpriseClient extends TerraformApiClient {
         return new AdminOps(this);
     }
 
+    // untested - not public on tf cloud
     @Value
     public static class AdminOps {
         TerraformEnterpriseClient client;
@@ -33,6 +34,10 @@ public class TerraformEnterpriseClient extends TerraformApiClient {
                 if (parameters != null) builder.queryParams(client.queryString(parameters));
                 return builder.build();
             }).retrieve().bodyToMono(Models.MultipleOrganizations.class);
+        }
+
+        public Mono<Models.SingleOrganization> getOrganization(String name) {
+            return client.webClient.get().uri("/admin/organizations/{name}", name).retrieve().bodyToMono(Models.SingleOrganization.class);
         }
 
         /*

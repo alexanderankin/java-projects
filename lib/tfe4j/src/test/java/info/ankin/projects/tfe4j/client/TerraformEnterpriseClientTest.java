@@ -34,4 +34,11 @@ class TerraformEnterpriseClientTest extends BaseTest {
         }
     }
 
+    @SneakyThrows
+    @Test
+    void test_adminOps_getOrg_parsing() {
+        System.out.println(OBJECT_MAPPER.readValue(read("/info/ankin/projects/tfe4j/client/model/test_adminOps_getOrg_parsing.response1.json"),
+                Models.SingleOrganization.class));
+    }
+
 }
