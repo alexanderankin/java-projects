@@ -197,33 +197,52 @@ public interface Models {
     class SingleOrganization extends Wrappers.Single<Organization> {
     }
 
+    class SingleOrganizationItem extends Wrappers.Item<Organization> {
+        public SingleOrganizationItem() {
+            setType("organizations");
+        }
+
+        @Override
+        public SingleOrganization toSingle() {
+            return (SingleOrganization) new SingleOrganization().setData(this);
+        }
+    }
+
     @Data
     @Accessors(chain = true)
     class Organization {
         String name;
         @JsonProperty("access-beta-tools")
         Boolean accessBetaTools;
+        // not patchable
         @JsonProperty("external-id")
         String externalID;
         @JsonProperty("global-module-sharing")
         Boolean globalModuleSharing;
         @JsonProperty("is-disabled")
         Boolean isDisabled;
+        // not patchable
         @JsonProperty("notification-email")
         String notificationEmail;
+        // not patchable
         @JsonProperty("sso-enabled")
         Boolean ssoEnabled;
         @JsonProperty("terraform-build-worker-apply-timeout")
         String terraformBuildWorkerApplyTimeout;
         @JsonProperty("terraform-build-worker-plan-timeout")
         String terraformBuildWorkerPlanTimeout;
+        // not patchable
         @JsonProperty("terraform-worker-sudo-enabled")
         Boolean terraformWorkerSudoEnabled;
         @JsonProperty("workspace-limit")
         Integer workspaceLimit;
-        // not implemented in go-tfe
+        // not implemented in go-tfe?
         @JsonProperty("global-provider-sharing")
         Boolean globalProviderSharing;
+
+        public SingleOrganizationItem toItem() {
+            return (SingleOrganizationItem) new SingleOrganizationItem().setAttributes(this);
+        }
     }
     //</editor-fold>
 

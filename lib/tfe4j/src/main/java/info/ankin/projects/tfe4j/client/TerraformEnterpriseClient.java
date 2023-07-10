@@ -40,6 +40,13 @@ public class TerraformEnterpriseClient extends TerraformApiClient {
             return client.webClient.get().uri("/admin/organizations/{name}", name).retrieve().bodyToMono(Models.SingleOrganization.class);
         }
 
+        public Mono<Models.SingleOrganization> patchOrganization(String name, Models.SingleOrganization singleOrganization) {
+            return client.webClient.patch().uri("/admin/organizations/{name}", name)
+                    .bodyValue(singleOrganization)
+                    .retrieve().bodyToMono(Models.SingleOrganization.class);
+        }
+
+
         /*
 u := "admin/organizations"
 	req, err := s.client.NewRequest("GET"

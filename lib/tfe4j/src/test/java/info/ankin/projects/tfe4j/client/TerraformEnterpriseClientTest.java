@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class TerraformEnterpriseClientTest extends BaseTest {
 
     TerraformEnterpriseClient client = new TerraformEnterpriseClient(WebClient.builder()
@@ -39,6 +41,22 @@ class TerraformEnterpriseClientTest extends BaseTest {
     void test_adminOps_getOrg_parsing() {
         System.out.println(OBJECT_MAPPER.readValue(read("/info/ankin/projects/tfe4j/client/model/test_adminOps_getOrg_parsing.response1.json"),
                 Models.SingleOrganization.class));
+    }
+
+    @SneakyThrows
+    @Test
+    void test_adminOps_patchOrg_parsing() {
+        assertEquals(new Models.Organization()
+                        .setGlobalModuleSharing(true)
+                        .toItem().toSingle(),
+                OBJECT_MAPPER.readValue("{\n" +
+                                        "  \"data\": {\n" +
+                                        "    \"type\": \"organizations\",\n" +
+                                        "    \"attributes\": {\n" +
+                                        "      \"global-module-sharing\": true\n" +
+                                        "    }\n" +
+                                        "  }\n" +
+                                        "}\n", Models.SingleOrganization.class));
     }
 
 }
