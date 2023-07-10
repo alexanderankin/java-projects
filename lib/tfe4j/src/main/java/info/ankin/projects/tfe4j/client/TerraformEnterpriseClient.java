@@ -68,8 +68,18 @@ public class TerraformEnterpriseClient extends TerraformApiClient {
         }
         //</editor-fold>
 
-        public Mono<Void> listRuns() {
-            return Mono.empty();
+        //<editor-fold desc="runs">
+        public Mono<Models.MultipleRuns> listRuns() {
+            return listRuns(new Models.ListRunsParameters());
         }
+
+        public Mono<Models.MultipleRuns> listRuns(Models.ListRunsParameters listRunsParameters) {
+            return client.webClient.get().uri(u -> u.path("/admin/runs").queryParams(client.queryString(listRunsParameters)).build()).retrieve().bodyToMono(Models.MultipleRuns.class);
+        }
+
+        public Mono<Models.SingleRun> cancelRun(String id) {
+            return client.webClient.post().uri("/admin/runs/{id}/actions/force-cancel", id).retrieve().bodyToMono(Models.SingleRun.class);
+        }
+        //</editor-fold>
     }
 }

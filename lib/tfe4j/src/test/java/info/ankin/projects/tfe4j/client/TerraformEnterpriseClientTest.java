@@ -73,4 +73,12 @@ class TerraformEnterpriseClientTest extends BaseTest {
                 Models.MultipleRuns.class));
     }
 
+    @SneakyThrows
+    @Test
+    void test_adminOps_cancelRun_parsing() {
+        System.out.println(OBJECT_MAPPER.readValue(read("/info/ankin/projects/tfe4j/client/model/test_adminOps_cancelRun_parsing.response1.json"),
+                Models.SingleRun.class));
+    }
+
+
 }
