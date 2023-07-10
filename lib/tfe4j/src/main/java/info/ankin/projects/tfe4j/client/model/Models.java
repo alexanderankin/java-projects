@@ -2,9 +2,37 @@ package info.ankin.projects.tfe4j.client.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 public interface Models {
+    /**
+     * @see <a href="https://developer.hashicorp.com/terraform/enterprise/api-docs#query-parameters">Query Parameters</a>
+     */
+    @Data
+    @Accessors(chain = true)
+    class PagingParameters {
+        /**
+         * @see <a href="https://developer.hashicorp.com/terraform/enterprise/api-docs#pagination">Pagination</a>
+         */
+        @JsonProperty("page[number]")
+        Integer page;
+
+        /**
+         * @see <a href="https://developer.hashicorp.com/terraform/enterprise/api-docs#pagination">Pagination</a>
+         */
+        @JsonProperty("page[size]")
+        Integer size;
+
+        /**
+         * @see <a href="https://developer.hashicorp.com/terraform/enterprise/api-docs#inclusion-of-related-resources">Inclusion of Related Resources</a>
+         */
+        List<String> include;
+    }
+
     //<editor-fold desc="user">
     class SingleUser extends Wrappers.Single<User> {
     }
@@ -145,6 +173,24 @@ public interface Models {
     //</editor-fold>
 
     //<editor-fold desc="ent/admin/org">
+    // see documentation about parameter models
+    @ToString(callSuper = true)
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    @Accessors(chain = true)
+    class ListOrganizationsParameters extends PagingParameters {
+        @JsonProperty("q")
+        String query;
+        @JsonProperty("q[email]")
+        String email;
+        @JsonProperty("q[name]")
+        String name;
+        @JsonProperty("filter[module_producer]")
+        Boolean moduleProducer;
+        @JsonProperty("filter[provider_producer]")
+        Boolean providerProducer;
+    }
+
     class MultipleOrganizations extends Wrappers.Multiple<Organization> {
     }
 

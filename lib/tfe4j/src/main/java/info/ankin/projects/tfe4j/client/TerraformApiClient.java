@@ -1,18 +1,30 @@
 package info.ankin.projects.tfe4j.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import info.ankin.projects.tfe4j.client.model.JsonApiErrors;
 import info.ankin.projects.tfe4j.client.model.Models;
 import info.ankin.projects.tfe4j.client.model.TerraformClientResponseException;
 import lombok.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public abstract class TerraformApiClient {
+    protected static final TypeReference<Map<String, String>> MAP_TYPE = new TypeReference<>() {
+    };
     protected final WebClient webClient;
+    protected final ObjectMapper objectMapper = JsonMapper.builder().build();
 
     public TerraformApiClient(WebClient.Builder builder) {
         this(builder
@@ -38,6 +50,13 @@ public abstract class TerraformApiClient {
 
     public AccountOps accountOps() {
         return new AccountOps(this);
+    }
+
+    public MultiValueMap<String, String> queryString(Object p) {
+        return new MultiValueMapAdapter<>(objectMapper.convertValue(p, MAP_TYPE).entrySet().stream()
+                .filter(e -> e.getValue() != null)
+                .map(e -> Map.entry(e.getKey(), List.of(e.getValue())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
 
     @Value

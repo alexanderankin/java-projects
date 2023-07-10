@@ -1,7 +1,9 @@
 package info.ankin.projects.tfe4j.client;
 
+import info.ankin.projects.tfe4j.client.model.Models;
 import lombok.Value;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Mono;
 
 public class TerraformEnterpriseClient extends TerraformApiClient {
@@ -19,10 +21,18 @@ public class TerraformEnterpriseClient extends TerraformApiClient {
 
     @Value
     public static class AdminOps {
-        TerraformEnterpriseClient terraformEnterpriseClient;
+        TerraformEnterpriseClient client;
 
-        public Mono<String> listOrganizations() {
-            return terraformEnterpriseClient.webClient.get().uri("/admin/organizations").retrieve().bodyToMono(String.class);
+        public Mono<Models.MultipleOrganizations> listOrganizations() {
+            return listOrganizations(null);
+        }
+
+        public Mono<Models.MultipleOrganizations> listOrganizations(Models.ListOrganizationsParameters parameters) {
+            return client.webClient.get().uri(u -> {
+                UriBuilder builder = u.path("/admin/organizations");
+                if (parameters != null) builder.queryParams(client.queryString(parameters));
+                return builder.build();
+            }).retrieve().bodyToMono(Models.MultipleOrganizations.class);
         }
 
         /*
