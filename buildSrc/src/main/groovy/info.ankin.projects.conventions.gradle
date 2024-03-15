@@ -16,7 +16,7 @@ repositories {
 }
 
 // https://docs.gradle.org/current/userguide/java_testing.html#sec:configuring_java_integration_tests
-sourceSets {
+java.sourceSets {
     itest {
         compileClasspath += main.output + test.output
         runtimeClasspath += main.output + test.output
@@ -47,14 +47,15 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'org.mockito:mockito-core:3+'
     testImplementation 'ch.qos.logback:logback-classic:1.2.10'
-    testImplementation 'com.fasterxml.uuid:java-uuid-generator:4.0.1'
+    testImplementation 'com.fasterxml.uuid:java-uuid-generator:4.3.0'
 }
 
 project.ext.enableConventionConstraints = {
@@ -75,7 +76,7 @@ def integrationTest = tasks.register('integrationTest', Test) {
 
 // pick up integrationTest coverage file in report
 jacocoTestReport {
-    getExecutionData().from(fileTree(project.buildDir).include("jacoco/*.exec"))
+    getExecutionData().from(fileTree(project.layout.buildDirectory).include("jacoco/*.exec"))
 }
 
 check.dependsOn integrationTest

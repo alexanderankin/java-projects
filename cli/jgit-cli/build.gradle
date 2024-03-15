@@ -7,11 +7,12 @@ plugins {
 version = '0.0.1'
 
 dependencies {
-    implementation 'org.eclipse.jgit:org.eclipse.jgit.pgm:6.4.0.202211300538-r'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit.pgm:6.8.0.202311291450-r'
     implementation 'commons-codec:commons-codec:1.13'
-    implementation 'org.eclipse.jetty:jetty-io:10.0.13'
-    implementation 'org.eclipse.jetty:jetty-http:10.0.13'
-    implementation 'org.eclipse.jetty:jetty-server:10.0.13'
+    // implementation 'org.eclipse.jetty:jetty-io:10.0.14'
+    // implementation 'org.eclipse.jetty:jetty-http:10.0.14'
+    // implementation 'org.eclipse.jetty:jetty-server:10.0.14'
+    // implementation 'org.eclipse.jetty:jetty-util:10.0.14'
 }
 
 tasks.named('jar') { enabled false }

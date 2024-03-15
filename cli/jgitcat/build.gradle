@@ -26,14 +26,14 @@ jar {
     }
 }
 
-sourceSets { shadow {} }
+java.sourceSets { shadow {} }
 
 shadowJar {
     archiveBaseName.set 'shadow'
-    from sourceSets.main.output, sourceSets.shadow.output
+    from java.sourceSets.main.output, java.sourceSets.shadow.output
 }
 
-def tracingOutput = project.buildDir.toPath().resolve('native/agent-output/traceIt')
+def tracingOutput = project.layout.buildDirectory.asFile.get().toPath().resolve('native/agent-output/traceIt')
 sourceSets.shadow.java.srcDirs = []
 sourceSets.shadow.resources.srcDirs = [tracingOutput]
 
