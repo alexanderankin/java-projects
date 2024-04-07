@@ -2,6 +2,10 @@ package info.ankin.projects.spring.httpscustomizer;
 
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import lombok.SneakyThrows;
+import org.springframework.boot.ssl.DefaultSslBundleRegistry;
+import org.springframework.boot.ssl.SslBundle;
+import org.springframework.boot.ssl.SslBundles;
+import org.springframework.boot.ssl.SslStoreBundle;
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.Ssl;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -21,9 +25,9 @@ public abstract class HttpsCustomizer<T extends ConfigurableWebServerFactory> im
     @Override
     public void customize(T factory) {
         Ssl ssl = new Ssl();
-        ssl.setKeyPassword("");
+        ssl.setBundle("default");
         factory.setSsl(ssl);
-        factory.setSslStoreProvider(KeyStoreProvider.of(getKeyStore()));
+        factory.setSslBundles(new DefaultSslBundleRegistry("default", SslBundle.of(SslStoreBundle.of(getKeyStore(), "", null))));
     }
 
     /**
