@@ -1,13 +1,14 @@
 plugins {
     id 'info.ankin.projects.library-conventions'
-    id 'com.github.johnrengelman.shadow' // version '7.1.2'
+    id 'info.ankin.projects.shadow-conventions'
     id 'signing'
 }
 
 version = '0.0.1'
 
 dependencies {
-    implementation 'org.eclipse.jgit:org.eclipse.jgit.pgm:6.8.0.202311291450-r'
+    // https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit.pgm
+    implementation 'org.eclipse.jgit:org.eclipse.jgit.pgm:6.9.0.202403050737-r'
     implementation 'commons-codec:commons-codec:1.13'
     // implementation 'org.eclipse.jetty:jetty-io:10.0.14'
     // implementation 'org.eclipse.jetty:jetty-http:10.0.14'

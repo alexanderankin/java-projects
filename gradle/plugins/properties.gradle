@@ -1,7 +1,7 @@
 // https://discuss.gradle.org/t/place-for-properties-visible-from-both-buildsrc-and-project/18916/9
 Properties properties = new Properties()
 
-try (FileInputStream input = new FileInputStream(file('../gradle.properties'))) {
+try (FileInputStream input = new FileInputStream(file('../../gradle.properties'))) {
 	properties.load(input)
 }
 
