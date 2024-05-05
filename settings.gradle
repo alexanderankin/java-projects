@@ -1,5 +1,5 @@
 rootProject.name = 'java-projects'
-includeBuild('gradle/plugins')
+includeBuild('gradle/buildPlugins')
 include 'cli:jgit-cli'
 include 'cli:jgitcat'
 include 'cli:killport'
@@ -12,5 +12,6 @@ include 'lib:spring:https-customizer'
 include 'lib:spring:https-customizer-autoconfigure'
 include 'lib:spring:app'
 include 'lib:throwables'
+include 'plugins:gradle-plugins:code-artifact-credentials'
 include 'system:infer-platform'
 include 'system:terminal:supports-hyperlinks'
