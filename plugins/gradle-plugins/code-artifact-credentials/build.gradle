@@ -1,4 +1,24 @@
 plugins {
+    id 'info.ankin.projects.conventions'
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '1.2.1'
+}
+
+version '0.1.0'
+
+tasks.named('javadoc') { enabled false }
+
+dependencies {
+    implementation(gradleApi())
+}
+
+gradlePlugin {
+    plugins {
+        codeArtifactCredentials {
+            // noinspection GroovyAssignabilityCheck
+            id = 'info.ankin.projects.code-artifact-credentials'
+            // noinspection GroovyAssignabilityCheck
+            implementationClass = 'info.ankin.projects.gradle.plugins.cac.CodeArtifactCredsPlugin'
+        }
+    }
 }
