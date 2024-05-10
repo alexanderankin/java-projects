@@ -1,0 +1,13 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+    id 'info.ankin.projects.spring-conventions'
+}
+
+version '1.0.0'
+
+dependencies {
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.springframework.boot:spring-boot'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+}

@@ -1,0 +1,9 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+    id 'info.ankin.projects.spring-conventions'
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation(project(':lib:spring:json-logging-listener'))
+}
