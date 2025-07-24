@@ -6,7 +6,7 @@ plugins {
 group 'info.ankin.projects.spring'
 
 dependencies {
-    implementation platform('org.springframework.boot:spring-boot-dependencies:3.2.4')
-    annotationProcessor platform('org.springframework.boot:spring-boot-dependencies:3.2.4')
-    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2023.0.1')
+    implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.3')
+    annotationProcessor platform('org.springframework.boot:spring-boot-dependencies:3.5.3')
+    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2025.0.0')
 }
