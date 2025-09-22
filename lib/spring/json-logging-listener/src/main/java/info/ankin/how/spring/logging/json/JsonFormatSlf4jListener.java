@@ -35,6 +35,8 @@ import static info.ankin.how.spring.logging.json.JsonFormatListenerConfig.Props;
 @Slf4j
 @Order(10)
 public class JsonFormatSlf4jListener implements SpringApplicationRunListener {
+    public static final String NOT_ENABLED_MESSAGE =
+            "JsonFormatSlf4jListener is not enabled - set " + Props.PREFIX + ".enabled=true to enabled";
     public static final String NO_LOGBACK_MESSAGE =
             "No configuration occurred because logger is not logback: " +
                     "logger factory is not a (logback) logger context";
@@ -44,6 +46,7 @@ public class JsonFormatSlf4jListener implements SpringApplicationRunListener {
                     "and this is not allowed when the strict option is selected.";
     public static final String STRICT_MESSAGE_NO_LOGBACK = STRICT_MESSAGE + " " + NO_LOGBACK_MESSAGE;
     public static final String STRICT_PROP = Props.PREFIX + ".strict";
+    public static final String REGISTERED_MESSAGE = "registered JsonFormatSlf4jListener";
 
     static final Set<Class<? extends Encoder<?>>> KNOWN_JSON_ENCODERS = Set.of(
             LogstashEncoder.class
@@ -60,7 +63,7 @@ public class JsonFormatSlf4jListener implements SpringApplicationRunListener {
         Props props = Binder.get(environment).bindOrCreate(Props.PREFIX, Props.class);
 
         if (!props.isEnabled()) {
-            System.err.println("JsonFormatSlf4jListener is not enabled");
+            System.err.println(NOT_ENABLED_MESSAGE);
             return;
         }
 
@@ -124,5 +127,6 @@ public class JsonFormatSlf4jListener implements SpringApplicationRunListener {
         }
 
         log.debug("fixed {} encoders on root's {} console appender instances", fixed, consoleAppenderList.size());
+        log.info(REGISTERED_MESSAGE);
     }
 }

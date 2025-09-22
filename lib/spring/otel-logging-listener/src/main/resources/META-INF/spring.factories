@@ -1,0 +1,5 @@
+#org.springframework.context.ApplicationListener=\
+#    org.demo.SomeApplicationListener
+
+org.springframework.boot.SpringApplicationRunListener=\
+    info.ankin.how.spring.logging.otel.listener.OTelLoggingSlf4jListener
