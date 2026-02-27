@@ -42,7 +42,7 @@ public interface Check {
         termProgram {
             @Override
             public boolean check() {
-                return Arrays.asList("Hyper", "iTerm.app", "terminology", "WezTerm").contains(getEnv.apply("TERM_PROGRAM"));
+                return Arrays.asList("Hyper", "iTerm.app", "terminology", "WezTerm", "vscode", "ghostty", "zed").contains(getEnv.apply("TERM_PROGRAM"));
             }
         },
         /**

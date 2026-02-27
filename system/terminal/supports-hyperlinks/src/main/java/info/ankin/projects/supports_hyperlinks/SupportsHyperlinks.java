@@ -14,15 +14,15 @@ public class SupportsHyperlinks {
     private static final AtomicReference<Checker> cached = new AtomicReference<>();
 
     public static Checker checkerCached() {
-        if (cached.get() == null) {
-            cached.set(checker());
-        }
-
-        return cached.get();
+        return Holder.INSTANCE;
     }
 
     public static Checker checker() {
         return new Checker(new Check.ForcedCheck(), new Check.TtyCheck(), Check.Checks.VALUES);
+    }
+
+    private static class Holder {
+        private static final Checker INSTANCE = checker();
     }
 
     @Data
