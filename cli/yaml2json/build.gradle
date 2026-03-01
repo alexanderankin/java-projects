@@ -30,6 +30,7 @@ void customShadowJar(ShadowJar s, String name, String className) {
         attributes('Main-Class': 'info.ankin.projects.cli.yaml2json.' + className)
     }
     s.from zipTree(tasks.shadowJar.getArchiveFile())
+    s.destinationDirectory = layout.buildDirectory.dir('libs-custom').get().getAsFile()
 }
 
 def yaml2JsonJar = tasks.register('yaml2JsonJar', ShadowJar) {

@@ -13,8 +13,12 @@ public class Json2Yaml {
         YAMLMapper yamlMapper = new YAMLMapper();
         yamlMapper.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
 
-        JsonNode jsonNode = jsonMapper.reader().readTree(System.in);
-        yamlMapper.writeValue(System.out, jsonNode);
+        try (var parser = jsonMapper.createParser(System.in);
+             var generator = yamlMapper.createGenerator(System.out)) {
+            parser.nextToken();
+            if (parser.hasCurrentToken())
+                generator.copyCurrentStructure(parser);
+        }
         System.out.println();
     }
 }
