@@ -3,7 +3,7 @@ plugins {
 }
 
 // setting up a new group :(
-group 'info.ankin.projects.spring'
+group = 'info.ankin.projects.spring'
 
 dependencies {
     implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.3')

@@ -1,8 +1,7 @@
-package info.ankin.how.spring.logging.otel;
+package info.ankin.how.spring.logging.otel.appender;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.LoggingEvent;
-import info.ankin.how.spring.logging.otel.appender.OpenTelemetryAppender;
 import io.opentelemetry.api.logs.Severity;
 import io.opentelemetry.exporter.otlp.logs.OtlpGrpcLogRecordExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -39,7 +38,7 @@ class OpenTelemetryAppenderTest {
                 .setLoggerProvider(loggerProvider)
                 .build();
 
-        appender = new OpenTelemetryAppender(openTelemetry);
+        appender = new OpenTelemetryAppender(null, openTelemetry);
     }
 
     @ParameterizedTest

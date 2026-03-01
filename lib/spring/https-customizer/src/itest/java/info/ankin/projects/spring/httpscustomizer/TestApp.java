@@ -7,8 +7,8 @@ import lombok.SneakyThrows;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
 import org.apache.hc.core5.ssl.SSLContexts;
 import org.apache.hc.core5.ssl.TrustStrategy;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -39,9 +39,9 @@ public class TestApp {
         SSLContext sslContext = SSLContexts.custom()
                 .loadTrustMaterial(null, acceptingTrustStrategy)
                 .build();
-        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, new NoopHostnameVerifier());
+        DefaultClientTlsStrategy tss = new DefaultClientTlsStrategy(sslContext, new NoopHostnameVerifier());
         CloseableHttpClient httpClient = HttpClients.custom()
-                .setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create().setSSLSocketFactory(csf).build())
+                .setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create().setTlsSocketStrategy(tss).build())
                 .build();
 
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();

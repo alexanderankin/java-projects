@@ -12,7 +12,7 @@ apply from: './properties.gradle'
 // https://stackoverflow.com/a/66897652
 dependencies {
     // https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html#_adding_the_plugin
-    implementation 'org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin:0.10.1'
+    implementation 'org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin:0.11.1'
     implementation platform('com.fasterxml.jackson:jackson-bom:' + property('jacksonVersion'))
-    implementation 'com.github.johnrengelman:shadow:8.1.1'
+    implementation 'com.gradleup.shadow:com.gradleup.shadow.gradle.plugin:9.3.2'
 }

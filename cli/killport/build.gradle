@@ -11,7 +11,7 @@ dependencies {
 }
 
 application {
-    mainClass.set 'info.ankin.projects.cli.killport.KillPort'
+    mainClass = 'info.ankin.projects.cli.killport.KillPort'
 }
 
 // https://graalvm.github.io/native-build-tools/0.9.11/gradle-plugin.html#_configuration_options
@@ -19,13 +19,13 @@ graalvmNative {
     binaries {
         main {
             // Main options
-            imageName.set 'killport'
-            mainClass.set application.mainClass.get()
+            imageName = 'killport'
+            mainClass = application.mainClass.get()
 
-            debug.set false
-            verbose.set true
-            fallback.set true
-            // sharedLibrary.set false
+            debug = false
+            verbose = true
+            fallback = true
+            // sharedLibrary = false
             // systemProperties = System.getProperties();
 
             // Adds a native image configuration file directory, containing files like reflection configuration
@@ -39,7 +39,7 @@ graalvmNative {
             // // Passes 'flag' directly to the JVM running the native image builder
             // jvmArgs.add('flag')
 
-            useFatJar.set true
+            useFatJar = true
         }
     }
 }
