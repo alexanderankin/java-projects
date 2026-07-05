@@ -1,3 +1,4 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' // version '7.1.2'
+    // https://plugins.gradle.org/plugin/com.gradleup.shadow—
+    id 'com.gradleup.shadow'
 }

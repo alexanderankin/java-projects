@@ -6,9 +6,9 @@ plugins {
 group = 'info.ankin.projects.spring'
 
 dependencies {
-    implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.3')
-    annotationProcessor platform('org.springframework.boot:spring-boot-dependencies:3.5.3')
-    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2025.0.0')
+    implementation platform('org.springframework.boot:spring-boot-dependencies:4.1.0')
+    annotationProcessor platform('org.springframework.boot:spring-boot-dependencies:4.1.0')
+    implementation platform('org.springframework.cloud:spring-cloud-dependencies:2025.1.2')
 
     // https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-bom
     implementation platform('io.opentelemetry:opentelemetry-bom:1.54.0')
