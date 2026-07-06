@@ -1,0 +1,17 @@
+plugins {
+    id 'info.ankin.projects.library-conventions'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+version = '0.0.1-SNAPSHOT'
+description = 'Utility for launching sub processes sync/async, with error handling'
+
+enableConventionConstraints()
+dependencies {
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'commons-io:commons-io'
+}

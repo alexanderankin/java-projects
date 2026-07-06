@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+application.mainClass = 'org.example.Example'
+
+repositories.maven { url = 'https://central.sonatype.com/repository/maven-snapshots' }
+// repositories.mavenLocal()
+repositories.mavenCentral()
+
+dependencies {
+    implementation('info.ankin.projects:exec:0.0.1-SNAPSHOT') {
+        changing = true
+    }
+}
