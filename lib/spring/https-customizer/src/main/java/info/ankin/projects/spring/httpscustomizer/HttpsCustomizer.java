@@ -1,10 +1,9 @@
 package info.ankin.projects.spring.httpscustomizer;
 
-import io.netty.handler.ssl.util.SelfSignedCertificate;
+import io.netty.pkitesting.CertificateBuilder;
 import lombok.SneakyThrows;
 import org.springframework.boot.ssl.DefaultSslBundleRegistry;
 import org.springframework.boot.ssl.SslBundle;
-import org.springframework.boot.ssl.SslBundles;
 import org.springframework.boot.ssl.SslStoreBundle;
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.Ssl;
@@ -37,15 +36,15 @@ public abstract class HttpsCustomizer<T extends ConfigurableWebServerFactory> im
      */
     @SneakyThrows
     protected KeyStore getKeyStore() {
-        SelfSignedCertificate selfSignedCertificate = new SelfSignedCertificate(
-                properties.getFqdn(),
-                properties.getNotBefore(),
-                properties.getNotAfter(),
-                properties.getAlgorithm(),
-                properties.getBits()
-        );
-        X509Certificate cert = selfSignedCertificate.cert();
-        PrivateKey key = selfSignedCertificate.key();
+        var certificateBuilder = new CertificateBuilder()
+                .setIsCertificateAuthority(true)
+                .subject(properties.getFqdn())
+                .notBefore(properties.getNotBefore().toInstant())
+                .notAfter(properties.getNotAfter().toInstant())
+                .algorithm(properties.getAlgorithm());
+        var x509Bundle = certificateBuilder.buildSelfSigned();
+        X509Certificate cert = x509Bundle.getCertificate();
+        PrivateKey key = x509Bundle.getKeyPair().getPrivate();
         return assemble(key, cert);
     }
 

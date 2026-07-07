@@ -1,6 +1,7 @@
 package info.ankin.projects.spring.httpscustomizer.properties;
 
 import info.ankin.projects.spring.httpscustomizer.HttpsCustomizerProperties;
+import io.netty.pkitesting.CertificateBuilder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -21,12 +22,7 @@ public class HttpsCustomizerConfigurationProperties {
     /**
      * hostname for the cert
      */
-    String fqdn = "localhost";
-
-    /**
-     * how big of a cert should it be (default 2048)
-     */
-    Integer bits = 2048;
+    String fqdn = "CN=localhost, O=local, OU=host";
 
     /**
      * date before which the cert is not valid (defaults to now)
@@ -41,9 +37,7 @@ public class HttpsCustomizerConfigurationProperties {
     /**
      * type of cert
      */
-    Algorithm algorithm = Algorithm.RSA;
-
-    public enum Algorithm { RSA, EC };
+    CertificateBuilder.Algorithm algorithm = CertificateBuilder.Algorithm.ed25519;
 
     public HttpsCustomizerProperties toProps() {
         return PropertyMapper.INSTANCE.toProps(this);

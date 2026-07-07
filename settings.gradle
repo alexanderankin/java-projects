@@ -1,5 +1,8 @@
 rootProject.name = 'java-projects'
-includeBuild('gradle/buildPlugins')
+includeBuild 'gradle/buildPlugins'
+
+def javaVersion = JavaVersion.current()
+
 include ':cli:jgit-cli'
 include ':cli:killport'
 include ':cli:yaml2json'
@@ -14,6 +17,7 @@ include ':lib:spring:otel-logback-appender'
 include ':lib:spring:otel-logging-listener'
 include ':lib:spring:otel-logging-listener-demo'
 include ':lib:throwables'
-include ':system:exec'
+if (javaVersion >= JavaVersion.VERSION_21)
+    include ':system:exec'
 include ':system:infer-platform'
 include ':system:terminal:supports-hyperlinks'
