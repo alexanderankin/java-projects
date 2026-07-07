@@ -7,7 +7,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
-version = '0.0.1-SNAPSHOT'
+version = file('version.txt').text.trim()
 description = 'Utility for launching sub processes sync/async, with error handling'
 
 enableConventionConstraints()
