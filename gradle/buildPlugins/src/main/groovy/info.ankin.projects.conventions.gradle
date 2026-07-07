@@ -44,6 +44,12 @@ configurations {
     itestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
+// https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+configurations {
+    mockitoAgent {
+    }
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:6.1.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:6.1.1'
@@ -55,6 +61,9 @@ dependencies {
 
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'org.mockito:mockito-core:5+'
+    mockitoAgent('org.mockito:mockito-core:5+') {
+        transitive = false
+    }
     testImplementation 'ch.qos.logback:logback-classic:1.5.37'
     testImplementation 'com.fasterxml.uuid:java-uuid-generator:5.2.0'
 }
@@ -96,7 +105,7 @@ def integrationTest = tasks.register('integrationTest', Test) {
 
 // pick up integrationTest coverage file in report
 jacocoTestReport {
-    getExecutionData().from(fileTree(project.layout.buildDirectory).include("jacoco/*.exec"))
+    getExecutionData().from(fileTree(project.layout.buildDirectory).include('jacoco/*.exec'))
 }
 
 check.dependsOn integrationTest
@@ -104,3 +113,7 @@ check.dependsOn integrationTest
 
 // use junit for all tests
 tasks.withType(Test).configureEach { t -> t.useJUnitPlatform() }
+// https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+tasks.withType(Test).configureEach { t -> t.jvmArgs += "-javaagent:${configurations.mockitoAgent.asPath}" }
+// various threads - proactively turning off this optimization for future java versions
+tasks.withType(Test).configureEach { t -> t.jvmArgs += '-Xshare:off' }
