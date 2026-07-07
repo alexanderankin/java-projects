@@ -1,0 +1,75 @@
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/picocli-logback-level-mixin.yaml
+      - lib/picocli-logback-level-mixin/**
+    types:
+      - opened
+      - synchronize
+      - closed
+
+env:
+  GRADLE_SUBPROJECT_DIR: lib/picocli-logback-level-mixin
+  GRADLE_SUBPROJECT: ':lib:picocli-logback-level-mixin'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17', '21' ]
+    name: Test with java version ${{ matrix.java }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: gradle
+      - uses: gradle/actions/setup-gradle@v6
+      - run: './gradlew ${{ env.GRADLE_SUBPROJECT }}:build'
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      VERSION_CHANGED: ${{ steps.compare.outputs.VERSION_CHANGED }}
+    steps:
+      - { uses: actions/checkout@v7, with: { fetch-depth: 0 } }
+      # - run: 'git fetch origin ${{ github.event.pull_request.base.ref }}'
+      - id: compare
+        run: |
+          # Get version from target branch
+          TARGET_VERSION=$(git show origin/${{ github.event.pull_request.base.ref }}:${{ env.GRADLE_SUBPROJECT_DIR }}/version.txt)
+          # Get version from PR branch
+          CURRENT_VERSION=$(cat ${{ env.GRADLE_SUBPROJECT_DIR }}/version.txt)
+          
+          echo "Target branch version: ${TARGET_VERSION}"
+          echo "Current PR version: ${CURRENT_VERSION}"
+          
+          if [ "${CURRENT_VERSION}" == "${TARGET_VERSION}" ]
+          then
+            echo "VERSION_CHANGED=1" | tee -a "${GITHUB_OUTPUT}"
+          else
+            echo "VERSION_CHANGED=" | tee -a "${GITHUB_OUTPUT}"
+          fi
+
+  publish:
+    permissions:
+      contents: read
+      id-token: write
+    needs:
+      - build
+      - version
+    if: github.event.pull_request.merged == true && needs.version.outputs.VERSION_CHANGED != '' && false # while debugging, '&& false'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 25
+          cache: gradle
+      - uses: gradle/actions/setup-gradle@v6
+      - run: |
+          ./gradlew ${{ env.GRADLE_SUBPROJECT }}:publishToMavenCentral
