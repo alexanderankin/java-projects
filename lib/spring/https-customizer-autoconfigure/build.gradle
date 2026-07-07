@@ -5,6 +5,8 @@ plugins {
 dependencies {
     implementation project(':lib:spring:https-customizer')
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'org.springframework.boot:spring-boot-tomcat'
+    implementation 'org.springframework.boot:spring-boot-reactor-netty'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     compileOnly 'org.mapstruct:mapstruct:1.5.2.Final'

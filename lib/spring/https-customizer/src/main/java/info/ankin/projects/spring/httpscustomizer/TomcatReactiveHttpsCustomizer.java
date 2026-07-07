@@ -1,6 +1,6 @@
 package info.ankin.projects.spring.httpscustomizer;
 
-import org.springframework.boot.web.embedded.tomcat.TomcatReactiveWebServerFactory;
+import org.springframework.boot.tomcat.reactive.TomcatReactiveWebServerFactory;
 
 public class TomcatReactiveHttpsCustomizer extends HttpsCustomizer<TomcatReactiveWebServerFactory> {
     public TomcatReactiveHttpsCustomizer(HttpsCustomizerProperties properties) {

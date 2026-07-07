@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ExecTest {
     Exec exec;
@@ -48,13 +48,13 @@ class ExecTest {
     @Test
     void longRunningTest() {
         var outputStream = new ByteArrayOutputStream();
-        var bash = exec.run(new ProcessConfig()
+        var bash = assertThrows(Exec.ExecExitCodeException.class, () -> exec.run(new ProcessConfig()
                 .setCommand("bash")
                 .setArguments(List.of("-c", "for i in {1..10000}; do printf $i; sleep 1; done"))
                 .setStandardOutput(new ProcessConfig.ProcessStream.PipeProcessStream.ProcessOutputToStream().setOutputStream(outputStream))
                 .setTimeout(Duration.ofSeconds(5))
-                .setTimeoutAction(ProcessConfig.TimeoutAction.SigTermThenThrow.DEFAULT));
+                .setTimeoutAction(ProcessConfig.TimeoutAction.SigTermThenThrow.DEFAULT)));
         System.out.println(outputStream.size());
-        System.out.println(bash);
+        System.out.println(bash.completedProcess);
     }
 }

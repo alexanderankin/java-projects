@@ -1,6 +1,6 @@
 package info.ankin.projects.spring.httpscustomizer;
 
-import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
+import org.springframework.boot.reactor.netty.NettyReactiveWebServerFactory;
 
 public class NettyHttpsCustomizer extends HttpsCustomizer<NettyReactiveWebServerFactory> {
     public NettyHttpsCustomizer(HttpsCustomizerProperties properties) {
