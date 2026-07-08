@@ -39,7 +39,7 @@ jobs:
       - { uses: tj-actions/changed-files@v47, id: changed_files }
       - run: |
           file=${{ env.GRADLE_SUBPROJECT_DIR }}/version.txt
-          if ! echo '${{ steps.changed_files.outputs.modified_files }}' | jq -r .[] | grep '^'${file}'$'
+          if ! echo '${{ steps.changed_files.outputs.modified_files }}' | tr ' ' '\n' | grep '^'${file}'$'
           then
             echo "VERSION_CHANGED=" | tee -a "${GITHUB_OUTPUT}"
           else
