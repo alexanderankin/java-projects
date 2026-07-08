@@ -1,4 +1,5 @@
 import com.vanniktech.maven.publish.Checksum
+import com.vanniktech.maven.publish.DeploymentValidation
 
 plugins {
     id 'info.ankin.projects.conventions'
@@ -34,7 +35,8 @@ boolean propertiesSet() {
 
 if (propertiesSet())
     mavenPublishing {
-        publishToMavenCentral()
+        // https://vanniktech.github.io/gradle-maven-publish-plugin/central/#uploading-with-automatic-publishing
+        publishToMavenCentral(true, DeploymentValidation.VALIDATED)
         signAllPublications()
 
         checksums(Checksum.MD5, Checksum.SHA1, Checksum.SHA512) // requirements + good hash
