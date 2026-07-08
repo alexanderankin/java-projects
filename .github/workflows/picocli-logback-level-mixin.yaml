@@ -30,6 +30,7 @@ jobs:
           cache: gradle
       - { uses: gradle/actions/setup-gradle@v6, with: { cache-overwrite-existing: true } }
       - run: './gradlew ${{ env.GRADLE_SUBPROJECT }}:build'
+        if: github.event.pull_request.merged != true
   version:
     runs-on: ubuntu-latest
     outputs:
