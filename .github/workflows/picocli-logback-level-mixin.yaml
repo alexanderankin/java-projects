@@ -1,14 +1,21 @@
 on:
   pull_request:
-    branches:
+    branches: &branches
       - main
-    paths:
+    paths: &paths
+      - .github/release-please/.release-please-manifest.json
+      - .github/release-please/release-please-config.json
       - .github/workflows/picocli-logback-level-mixin.yaml
       - lib/picocli-logback-level-mixin/**
     types:
       - opened
+      - reopened
       - synchronize
       - closed
+
+  push:
+    branches: *branches
+    paths: *paths
 
 env:
   GRADLE_SUBPROJECT_DIR: lib/picocli-logback-level-mixin
@@ -20,6 +27,7 @@ defaults:
 
 jobs:
   build:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -28,32 +36,32 @@ jobs:
           distribution: 'temurin'
           java-version: 25
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v6
+      - { uses: gradle/actions/setup-gradle@v6, with: { cache-overwrite-existing: true } }
       - run: './gradlew ${{ env.GRADLE_SUBPROJECT }}:build'
-  version:
+
+  release-please:
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     outputs:
-      VERSION_CHANGED: ${{ steps.compare.outputs.VERSION_CHANGED }}
+      release_created: ${{ steps.release.outputs['lib/picocli-logback-level-mixin--release_created'] }}
+      version: ${{ steps.release.outputs['lib/picocli-logback-level-mixin--version'] }}
     steps:
-      - { uses: actions/checkout@v7, with: { fetch-depth: 0 } }
-      - { uses: tj-actions/changed-files@v47, id: changed_files }
-      - run: |
-          file=${{ env.GRADLE_SUBPROJECT_DIR }}/version.txt
-          if ! echo '${{ steps.changed_files.outputs.modified_files }}' | tr ' ' '\n' | grep '^'${file}'$'
-          then
-            echo "VERSION_CHANGED=" | tee -a "${GITHUB_OUTPUT}"
-          else
-            echo "VERSION_CHANGED=1" | tee -a "${GITHUB_OUTPUT}"
-          fi
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: .github/release-please/release-please-config.json
+          manifest-file: .github/release-please/.release-please-manifest.json
+          skip-github-release: false
 
   publish:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
     permissions:
       contents: read
       id-token: write
-    needs:
-      - build
-      - version
-    if: github.event.pull_request.merged == true && needs.version.outputs.VERSION_CHANGED != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -62,7 +70,7 @@ jobs:
           distribution: 'temurin'
           java-version: 25
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v6
+      - { uses: gradle/actions/setup-gradle@v6, with: { cache-overwrite-existing: true } }
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: 'us-east-1'
@@ -73,4 +81,6 @@ jobs:
           export ORG_GRADLE_PROJECT_mavenCentralUsername=$(echo ${_maven_central_token} | jq -r | grep -m1 -oP '(?<=<username>).*?(?=</username>)')
           export ORG_GRADLE_PROJECT_mavenCentralPassword=$(echo ${_maven_central_token} | jq -r | grep -m1 -oP '(?<=<password>).*?(?=</password>)')
           export ORG_GRADLE_PROJECT_signingInMemoryKey="$(echo ${_maven_central_key} | jq -r)"
-          ./gradlew ${{ env.GRADLE_SUBPROJECT }}:publishToMavenCentral
+
+          echo ./gradlew ${{ env.GRADLE_SUBPROJECT }}:publishToMavenCentral \
+            -PversionOverride="${{ needs.release-please.outputs.version }}"
