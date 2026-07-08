@@ -70,7 +70,7 @@ jobs:
           role-to-assume: arn:aws:iam::662610805887:role/prod-ssm-gha-read-maven-central-role
       - run: |
           params=$(aws ssm get-parameters-by-path --path /maven-central | jq -c)
-          eval $(echo "${params}" | jq -r '.Parameters[] | ("export " + (.Name | sub("[/-]"; "_")) + "='"'"'" + (.Value | tojson) + "'"'"';"')
+          eval $(echo "${params}" | jq -r '.Parameters[] | ("export " + (.Name | gsub("[/-]"; "_")) + "='"'"'" + (.Value | tojson) + "'"'"';")')
           export ORG_GRADLE_PROJECT_mavenCentralUsername=$(echo ${_maven_central_token} | jq -r | grep -m1 -oP '(?<=<username>).*?(?=</username>)')
           export ORG_GRADLE_PROJECT_mavenCentralPassword=$(echo ${_maven_central_token} | jq -r | grep -m1 -oP '(?<=<password>).*?(?=</password>)')
           export ORG_GRADLE_PROJECT_signingInMemoryKey="$(echo ${_maven_central_key} | jq -r)"

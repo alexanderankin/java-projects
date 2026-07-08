@@ -20,6 +20,9 @@ export ORG_GRADLE_PROJECT_mavenCentralUsername=$(cat ~/.ssh/maven-central.token.
 export ORG_GRADLE_PROJECT_mavenCentralPassword=$(cat ~/.ssh/maven-central.token.xml | grep -m1 -oP '(?<=<password>).*?(?=</password>)')
 export ORG_GRADLE_PROJECT_signingInMemoryKey="$(cat ~/.ssh/maven-central.key.pgp)"
 
+aws ssm put-parameter --type SecureString --name /maven-central/token --value file://.ssh/maven-central.token.xml
+aws ssm put-parameter --type SecureString --name /maven-central/key --value file://.ssh/maven-central.key.pgp
+
 ORG_GRADLE_PROJECT_signingInMemoryKeyId=12345678            # Optional
 ORG_GRADLE_PROJECT_signingInMemoryKeyPassword=some_password # If key was created with a password.
  */
