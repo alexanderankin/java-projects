@@ -14,19 +14,19 @@ env:
   GRADLE_SUBPROJECT_DIR: lib/picocli-logback-level-mixin
   GRADLE_SUBPROJECT: ':lib:picocli-logback-level-mixin'
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '17', '21' ]
-    name: Test with java version ${{ matrix.java }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: ${{ matrix.java }}
+          java-version: 25
           cache: gradle
       - uses: gradle/actions/setup-gradle@v6
       - run: './gradlew ${{ env.GRADLE_SUBPROJECT }}:build'
@@ -49,9 +49,9 @@ jobs:
           
           if [ "${CURRENT_VERSION}" == "${TARGET_VERSION}" ]
           then
-            echo "VERSION_CHANGED=1" | tee -a "${GITHUB_OUTPUT}"
-          else
             echo "VERSION_CHANGED=" | tee -a "${GITHUB_OUTPUT}"
+          else
+            echo "VERSION_CHANGED=1" | tee -a "${GITHUB_OUTPUT}"
           fi
 
   publish:
@@ -61,7 +61,7 @@ jobs:
     needs:
       - build
       - version
-    if: github.event.pull_request.merged == true && needs.version.outputs.VERSION_CHANGED != '' && false # while debugging, '&& false'
+    if: github.event.pull_request.merged == true && needs.version.outputs.VERSION_CHANGED != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -71,5 +71,14 @@ jobs:
           java-version: 25
           cache: gradle
       - uses: gradle/actions/setup-gradle@v6
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: 'us-east-1'
+          role-to-assume: arn:aws:iam::662610805887:role/prod-ssm-gha-read-maven-central-role
       - run: |
+          params=$(aws ssm get-parameters-by-path --path /maven-central | jq -c)
+          eval $(echo "${params}" | jq -r '.Parameters[] | ("export " + (.Name | sub("[/-]"; "_")) + "='"'"'" + (.Value | tojson) + "'"'"';"')
+          export ORG_GRADLE_PROJECT_mavenCentralUsername=$(echo ${_maven_central_token} | jq -r | grep -m1 -oP '(?<=<username>).*?(?=</username>)')
+          export ORG_GRADLE_PROJECT_mavenCentralPassword=$(echo ${_maven_central_token} | jq -r | grep -m1 -oP '(?<=<password>).*?(?=</password>)')
+          export ORG_GRADLE_PROJECT_signingInMemoryKey="$(echo ${_maven_central_key} | jq -r)"
           ./gradlew ${{ env.GRADLE_SUBPROJECT }}:publishToMavenCentral
