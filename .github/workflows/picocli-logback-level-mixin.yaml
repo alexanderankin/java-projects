@@ -28,7 +28,7 @@ jobs:
           distribution: 'temurin'
           java-version: 25
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v6
+      - { uses: gradle/actions/setup-gradle@v6, with: { cache-overwrite-existing: true } }
       - run: './gradlew ${{ env.GRADLE_SUBPROJECT }}:build'
   version:
     runs-on: ubuntu-latest
@@ -45,6 +45,7 @@ jobs:
           else
             echo "VERSION_CHANGED=1" | tee -a "${GITHUB_OUTPUT}"
           fi
+        id: compare
 
   publish:
     permissions:
@@ -62,7 +63,7 @@ jobs:
           distribution: 'temurin'
           java-version: 25
           cache: gradle
-      - uses: gradle/actions/setup-gradle@v6
+      - { uses: gradle/actions/setup-gradle@v6, with: { cache-overwrite-existing: true } }
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: 'us-east-1'
