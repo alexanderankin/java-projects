@@ -30,6 +30,7 @@ jobs:
           cache: gradle
       - { uses: gradle/actions/setup-gradle@v6, with: { cache-overwrite-existing: true } }
       - run: './gradlew ${{ env.GRADLE_SUBPROJECT }}:build'
+        if: github.event.pull_request.merged != true
   version:
     runs-on: ubuntu-latest
     outputs:
@@ -69,7 +70,7 @@ jobs:
           aws-region: 'us-east-1'
           role-to-assume: arn:aws:iam::662610805887:role/prod-ssm-gha-read-maven-central-role
       - run: |
-          params=$(aws ssm get-parameters-by-path --path /maven-central | jq -c)
+          params=$(aws ssm get-parameters-by-path --with-decryption --path /maven-central | jq -c)
           eval $(echo "${params}" | jq -r '.Parameters[] | ("export " + (.Name | gsub("[/-]"; "_")) + "='"'"'" + (.Value | tojson) + "'"'"';")')
           export ORG_GRADLE_PROJECT_mavenCentralUsername=$(echo ${_maven_central_token} | jq -r | grep -m1 -oP '(?<=<username>).*?(?=</username>)')
           export ORG_GRADLE_PROJECT_mavenCentralPassword=$(echo ${_maven_central_token} | jq -r | grep -m1 -oP '(?<=<password>).*?(?=</password>)')
