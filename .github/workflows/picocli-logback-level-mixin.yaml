@@ -39,10 +39,11 @@ jobs:
       # - run: 'git fetch origin ${{ github.event.pull_request.base.ref }}'
       - id: compare
         run: |
+          file=${{ env.GRADLE_SUBPROJECT_DIR }}/version.txt
           # Get version from target branch
-          TARGET_VERSION=$(git show origin/${{ github.event.pull_request.base.ref }}:${{ env.GRADLE_SUBPROJECT_DIR }}/version.txt)
+          TARGET_VERSION=$(git show ${{ github.event.before }}:${file})
           # Get version from PR branch
-          CURRENT_VERSION=$(cat ${{ env.GRADLE_SUBPROJECT_DIR }}/version.txt)
+          CURRENT_VERSION=$(git show ${{ github.sha }}:${file})
           
           echo "Target branch version: ${TARGET_VERSION}"
           echo "Current PR version: ${CURRENT_VERSION}"
