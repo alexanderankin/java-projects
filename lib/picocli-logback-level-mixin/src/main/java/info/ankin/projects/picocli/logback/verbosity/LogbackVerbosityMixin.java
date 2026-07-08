@@ -3,6 +3,8 @@ package info.ankin.projects.picocli.logback.verbosity;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.ConsoleAppender;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,14 @@ public class LogbackVerbosityMixin {
     public LogbackVerbosityMixin(Level defaultLevel) {
         rootLogger = ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger(Logger.ROOT_LOGGER_NAME);
         rootLogger.setLevel(defaultLevel);
+    }
+
+    public static void logToStderr() {
+        ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger(Logger.ROOT_LOGGER_NAME).iteratorForAppenders().forEachRemaining(a -> {
+            if (a instanceof ConsoleAppender<ILoggingEvent> c) {
+                c.setOutputStream(System.err);
+            }
+        });
     }
 
     @CommandLine.Option(
