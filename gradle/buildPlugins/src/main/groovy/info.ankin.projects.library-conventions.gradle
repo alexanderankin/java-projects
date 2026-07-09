@@ -1,5 +1,4 @@
-import com.vanniktech.maven.publish.Checksum
-import com.vanniktech.maven.publish.DeploymentValidation
+import com.vanniktech.maven.publish.*
 
 plugins {
     id 'info.ankin.projects.conventions'
@@ -27,6 +26,7 @@ aws ssm put-parameter --type SecureString --name /maven-central/key --value file
 ORG_GRADLE_PROJECT_signingInMemoryKeyId=12345678            # Optional
 ORG_GRADLE_PROJECT_signingInMemoryKeyPassword=some_password # If key was created with a password.
  */
+
 boolean propertiesSet() {
     ['mavenCentralUsername', 'mavenCentralPassword', 'signingInMemoryKey'].every {
         project.providers.gradleProperty(it).isPresent()
@@ -35,6 +35,7 @@ boolean propertiesSet() {
 
 if (propertiesSet())
     mavenPublishing {
+        configure(new JavaLibrary(new JavadocJar.None(), new SourcesJar.Sources()))
         // https://vanniktech.github.io/gradle-maven-publish-plugin/central/#uploading-with-automatic-publishing
         publishToMavenCentral(true, DeploymentValidation.VALIDATED)
         signAllPublications()
