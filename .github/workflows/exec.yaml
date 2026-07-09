@@ -3,16 +3,16 @@ on:
     branches:
       - main
     paths:
-      - .github/workflows/picocli-logback-level-mixin.yaml
-      - lib/picocli-logback-level-mixin/**
+      - .github/workflows/exec.yaml
+      - system/exec/**
     types:
       - opened
       - synchronize
       - closed
 
 env:
-  GRADLE_SUBPROJECT_DIR: lib/picocli-logback-level-mixin
-  GRADLE_SUBPROJECT: ':lib:picocli-logback-level-mixin'
+  GRADLE_SUBPROJECT_DIR: system/exec
+  GRADLE_SUBPROJECT: ':system:exec'
 
 defaults:
   run:
