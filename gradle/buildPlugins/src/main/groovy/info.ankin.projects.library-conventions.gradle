@@ -35,7 +35,7 @@ boolean propertiesSet() {
 
 if (propertiesSet())
     mavenPublishing {
-        configure(new JavaLibrary(new JavadocJar.None(), new SourcesJar.Sources()))
+        configure(new JavaLibrary(new JavadocJar.Empty(), new SourcesJar.Sources()))
         // https://vanniktech.github.io/gradle-maven-publish-plugin/central/#uploading-with-automatic-publishing
         publishToMavenCentral(true, DeploymentValidation.VALIDATED)
         signAllPublications()
