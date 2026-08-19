@@ -14,4 +14,5 @@ enableConventionConstraints()
 dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation 'commons-io:commons-io'
+    testImplementation 'org.awaitility:awaitility:4.3.0'
 }
