@@ -7,6 +7,6 @@ description = 'verbosity level adjuster for use as a picocli mixin'
 
 enableConventionConstraints()
 dependencies {
-    implementation 'ch.qos.logback:logback-classic:1.5.37'
+    implementation 'ch.qos.logback:logback-classic:1.6.3'
     implementation 'info.picocli:picocli'
 }

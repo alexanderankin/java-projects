@@ -38,6 +38,9 @@ public class LogbackVerbosityMixin {
         rootLogger.setLevel(defaultLevel);
     }
 
+    /**
+     * call this method if you need to redirect console logs to stderr
+     */
     public static void logToStderr() {
         ((LoggerContext) LoggerFactory.getILoggerFactory()).getLogger(Logger.ROOT_LOGGER_NAME).iteratorForAppenders().forEachRemaining(a -> {
             if (a instanceof ConsoleAppender<ILoggingEvent> c) {
